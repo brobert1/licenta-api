@@ -41,6 +41,10 @@ const schema = new Schema(
     lastLoginAt: {
       type: Date,
     },
+    elo: {
+      type: Number,
+      default: 1200,
+    },
   },
   { timestamps: true }
 );

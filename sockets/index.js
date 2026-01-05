@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import jwt from 'jsonwebtoken';
 import { disconnectSocket } from '@sockets/game-handlers';
 import { Server } from 'socket.io';
@@ -6,7 +7,7 @@ import * as gameHandlers from './game-handlers';
 export const initializeSockets = (server) => {
   const io = new Server(server, {
     cors: {
-      origin: process.env.SITE_URL || 'http://localhost:3000',
+      origin: process.env.APP_BASE_URL,
       methods: ['GET', 'POST'],
       credentials: true,
     },
@@ -46,7 +47,7 @@ export const initializeSockets = (server) => {
     socket.on('leaveQueue', () => gameHandlers.leaveQueue(io, socket));
     socket.on('makeMove', (data) => gameHandlers.makeMove(io, socket, data));
     socket.on('gameAction', (data) => gameHandlers.gameAction(io, socket, data));
-    
+
     socket.on('disconnect', () => {
       console.log(`User disconnected: ${socket.user._id}`);
       disconnectSocket(io, socket);

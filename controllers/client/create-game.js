@@ -16,6 +16,7 @@ export default async (req, res) => {
 
   const game = await Game.create({
     user,
+    type: 'bot',
     white,
     black,
     result,

@@ -13,6 +13,7 @@
           "@db": "./db",
           "@examples": "./examples",
           "@functions": "./functions",
+          "@lib": "./lib",
           "@middleware": "./middleware",
           "@models": "./models",
           "@plugins": "./plugins",

@@ -1,20 +1,63 @@
-import { paginate, reference } from 'express-goodies/mongoose';
+import { paginate } from 'express-goodies/mongoose';
 import { Schema, model } from 'mongoose';
-import { requiredString, sanitizedString } from './schemas/types';
+import { sanitizedString } from './schemas/types';
 
 /**
- * Games are chess matches between the user and the computer
+ * Games are chess matches between the user and the computer OR between two users
  */
 const name = 'game';
 const schema = new Schema(
   {
-    user: reference,
-    white: requiredString,
-    black: requiredString,
-    result: sanitizedString,
+    type: {
+      type: String,
+      enum: ['bot', 'live'],
+      default: 'bot',
+    },
+    // For bot games - optional for live games
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: 'identity',
+    },
+    // For live games
+    whitePlayer: {
+      type: Schema.Types.ObjectId,
+      ref: 'identity',
+    },
+    blackPlayer: {
+      type: Schema.Types.ObjectId,
+      ref: 'identity',
+    },
+    white: {
+      type: String,
+      required: true,
+    },
+    black: {
+      type: String,
+      required: true,
+    },
+    result: sanitizedString, // "1-0", "0-1", "1/2-1/2", "*"
+    status: {
+      type: String,
+      enum: ['active', 'completed', 'aborted'],
+      default: 'completed',
+    },
     moves: Number,
-    pgn: requiredString,
-    opening: requiredString,
+    pgn: {
+      type: String,
+      default: '',
+    },
+    opening: {
+      type: String,
+      default: 'Starting position',
+    },
+    fen: String,
+    uciMoves: [String],
+    timeControl: {
+      initial: Number, // seconds
+      increment: Number, // seconds
+    },
+    whiteTimeRemaining: Number,
+    blackTimeRemaining: Number,
   },
   { timestamps: true }
 );

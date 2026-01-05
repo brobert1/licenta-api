@@ -12,6 +12,8 @@
       "@examples/*": ["./examples/*"],
       "@functions": ["./functions/index.js"],
       "@functions/*": ["./functions/*"],
+      "@lib": ["./lib/index.js"],
+      "@lib/*": ["./lib/*"],
       "@middleware": ["./middleware/index.js"],
       "@middleware/*": ["./middleware/*"],
       "@models": ["./models/index.js"],
