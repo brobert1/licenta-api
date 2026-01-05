@@ -1,0 +1,94 @@
+<mjml>
+  <mj-body>
+    <!-- Logo Section -->
+    <mj-section>
+      <mj-column background-color="#111111">
+        <mj-text color="#FFFFFF" align="center" font-size="20px" font-weight="bold" padding="10px">
+          <p>Alex Banzea</p>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <!-- Content Section -->
+    <mj-section padding="0px" background-color="#ffffff">
+      <mj-column vertical-align="middle">
+        <mj-spacer height="25px"></mj-spacer>
+        <mj-text
+          font-size="20px"
+          align="left"
+          color="#111111"
+          padding-bottom="2px"
+          font-family="Arial"
+          line-height="24px"
+        >
+          <b>Welcome!</b>
+        </mj-text>
+        <mj-text
+          font-size="15px"
+          align="left"
+          color="#000000"
+          font-family="Arial"
+          line-height="18px"
+        >
+          I'm Alex Banzea, International Chess Master and best-selling author on Chessable, with a
+          deep passion for teaching and sharing the beauty of chess. <br /><br />
+          You'll find expertly designed lessons, interactive tools, and resources to help you
+          improve quickly and confidently.<br /><br />
+          Thank you for joining us. Let's sharpen your skills and transform your chess game
+          together!
+        </mj-text>
+        <mj-spacer height="20px"></mj-spacer>
+        <mj-text
+          font-size="15px"
+          align="left"
+          color="#000000"
+          font-weight="100"
+          padding-bottom="0px"
+          font-family="Arial"
+          line-height="18px"
+        >
+          Alex Banzea
+        </mj-text>
+        <mj-text
+          font-size="15px"
+          align="left"
+          color="#000000"
+          font-weight="100"
+          padding-top="0px"
+          font-family="Arial"
+          line-height="18px"
+        >
+          International Chess Master & Founder
+        </mj-text>
+        <mj-spacer height="30px"></mj-spacer>
+      </mj-column>
+    </mj-section>
+
+    <!-- Footer -->
+    <mj-section background-color="#111111">
+      <mj-column vertical-align="middle">
+        <mj-social mode="horizontal" padding-top="5px">
+          <mj-social-element
+            href="https://www.youtube.com/c/AlexBanzea"
+            name="youtube"
+            icon-size="28px"
+            background-color="transparent"
+            padding="0 5px"
+          >
+          </mj-social-element>
+          <mj-social-element
+            name="instagram"
+            href="https://www.instagram.com/alex.banzea/"
+            icon-size="28px"
+            background-color="transparent"
+            padding="0 5px"
+          >
+          </mj-social-element>
+        </mj-social>
+        <mj-text color="#FFFFFF" font-size="11px" align="center" line-height="16px">
+          &copy; 2024 Alex Banzea. All rights reserved.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

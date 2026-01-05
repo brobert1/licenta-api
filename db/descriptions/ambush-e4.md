@@ -1,0 +1,3 @@
+The Sicilian Defense is hardly a defense. It's rather a minefield for White and nowadays, those mines were probably planted by high profile authors like Super-Grandmasters Anish Giri and Pentala Harikrishna or opening specialist Christof Sielecki.
+
+Remaining loyal to 1.e4 may seem difficult - but fear not! New Chessable author International Master Alexandru-Bogdan Banzea helps you to outsmart your opponents and reduce your workload while staying practical and ambitious. Avoid the crazy main lines with 3.d4 and steer the game towards the direction you want. So it's Black who steps into the danger zone.

@@ -1,0 +1,18 @@
+[Event "first draft of exercises: filtered: playing crystal as best move 2"]
+[Site "lichess.org"]
+[Date "2025.03.07"]
+[Result "*"]
+[Annotator "https://lichess.org/@/Capybara_London"]
+[FEN "r2qkb1r/pppn1ppp/4pn2/3p1b2/8/1P3NP1/PBPPPPBP/RN1QK2R w KQkq - 0 6"]
+[Variant "From Position"]
+[ECO "?"]
+[Opening "?"]
+[StudyName "first draft of exercises: filtered"]
+[ChapterName "exercise 2 (crystal rush)"]
+[SetUp "1"]
+[ChapterMode "gamebook"]
+
+{ White to play, choose between [6.d3] and [6.d4]
+(keep in mind the placement of the enemy bishop)
+Make the move when you are ready! }
+6. d3!

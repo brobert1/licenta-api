@@ -1,0 +1,13 @@
+[Event "Jobava London: essential theory: English Attack"]
+[Site "https://lichess.org/study/1nmNtv4s/32UO1nAK"]
+[Result "*"]
+[Variant "Standard"]
+[ECO "B07"]
+[Opening "Pirc Defense"]
+[Annotator "https://lichess.org/@/RoyalFlushDraw"]
+[StudyName "Jobava London: essential theory"]
+[ChapterName "English Attack"]
+[UTCDate "2025.01.16"]
+[UTCTime "17:46:06"]
+
+1. d4 Nf6 2. Nc3 g6 (2... d5 { [%csl Bd5] } 3. Bf4 { for Jobava to be possible we need black to put a pawn in the center (d5), otherwise we are playing the 'english attack' scheme. } { [%csl Bd5] }) 3. e4 d6 4. f3 { Preparing to play Be3 without allowing ...Ng4! } { [%cal Gc1e3,Rf6g4] } 4... Bg7 5. Be3 O-O 6. Qd2 c6 (6... e5 7. d5 c6 8. O-O-O cxd5 9. exd5 Nbd7 10. g4 Nb6 11. h4 Bd7 12. h5 $40) 7. O-O-O { This is our universal set-up when black is not fighting for the center with pawns. } 7... b5 8. Bh6! { Preparing to push h4-h5 without allowing black to slow us down with ...h5! } { [%cal Gh2h4,Gh4h5] } (8. h4?! h5 $13) 8... a5 9. h4 b4 10. Nce2 a4 11. h5 b3 (11... Nxh5 12. g4 Nf6 13. Bxg7 Kxg7 14. Qh6+ Kg8 15. e5 $18) 12. cxb3 axb3 13. a3 Nbd7 14. hxg6 fxg6 15. Bxg7 Kxg7 16. Qh6+ Kg8 17. e5! { [%csl Gd1,Rd8] } 17... Nh5 18. g4 $18 *

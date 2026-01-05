@@ -1,0 +1,13 @@
+[Event "Jobava London: essential theory: The ...c5-lines"]
+[Site "https://lichess.org/study/1nmNtv4s/QgxS7QlW"]
+[Result "*"]
+[Variant "Standard"]
+[ECO "D01"]
+[Opening "Rapport-Jobava System"]
+[Annotator "https://lichess.org/@/RoyalFlushDraw"]
+[StudyName "Jobava London: essential theory"]
+[ChapterName "The ...c5-lines"]
+[UTCDate "2025.01.19"]
+[UTCTime "12:43:45"]
+
+1. d4 d5 2. Nc3 Nf6 (2... c5 3. e4! dxe4 (3... cxd4 4. Qxd4 dxe4 5. Qxd8+ Kxd8 6. Bf4! { [%csl Rc7][%cal Rd8c7,Gf4c7,Ge1c1] } 6... Nf6 7. O-O-O+ Bd7 8. f3! exf3 9. Nxf3 $16 { [%csl Yc7,Yf7,Rd8][%cal Gf3e5,Gf3g5,Gc3b5] }) 4. d5 Nf6 5. Nge2 { [%csl Re4][%cal Ge2g3] } 5... e6 6. Nf4! { [%csl Gd5][%cal Gf4d5,Gc3d5] } 6... exd5 7. Nfxd5! { Taking with the f-knight because the c3-knight has pressure on e4. } { [%csl Ye4][%cal Gc3e4] } 7... Nxd5 8. Qxd5 Qxd5 9. Nxd5 { [%csl Rc7][%cal Gd5c7] } 9... Bd6 10. Be3 O-O 11. O-O-O $14 { [%csl Rd6] }) 3. Bf4 c5 4. e3 a6 (4... Nc6?? 5. Nb5! $18) (4... cxd4 5. exd4 a6! { avoiding the dxc5 lines and preparing to play ...Nc6 without losing to Nb5. This is the main line above 2300 elo. } 6. Bd3 Nc6 7. Nge2! (7. Nf3?! Bg4 $15 { [%csl Rf3,Yd4][%cal Gg4d1] }) 7... Bg4 8. f3 Bh5 9. g4 Bg6 10. h4 e6 11. h5 Bxd3 12. Qxd3 h6 13. O-O-O Bd6 14. Kb1 Qc7 15. Bxd6 Qxd6 16. Nc1 $14 { [%cal Gc1b3] }) 5. dxc5 Nc6!? { Delaying to attack the c5-pawn. With this move black is threatening to play the ...e5-Bxc5 combo. It's important to remember that this is nicely met by a3-b4! } { [%csl Rc5][%cal Rf8c5,Re7e5] } (5... e6! { winning back the pawn by force, leading to the normal lines. } { [%csl Rc5][%cal Gf8c5] } 6. Bd3 Bxc5 7. Nf3 Nc6 8. O-O O-O 9. e4 $36) 6. a3! e5 7. Bg5! { The key move, softening the d5-pawn, otherwise black was getting a comfortable game. } { [%csl Rf6,Yd5][%cal Gg5f6] } 7... d4 (7... Be6 8. b4 { [%csl Ga3,Gb4,Gc5][%cal Ga3b4,Gb4c5] } 8... Be7 9. Nf3 O-O 10. Be2 h6 11. Bh4 Qd7 12. O-O Rad8 13. Na4 $14 { [%cal Ga4b6] }) (7... Bxc5 8. Bxf6 Qxf6 9. Qxd5 Be7 10. Qf3 $16 { [%cal Ge1c1] }) 8. exd4 exd4 9. Ne4 Qe7 10. Bd3! { The pin looks scary at first, but white is totaly safe after this move. } 10... Bf5 11. Bxf6 gxf6 12. Qe2 Bxe4 13. Bxe4 $16 { [%cal Gg1f3,Ge1c1] } *

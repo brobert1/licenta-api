@@ -1,0 +1,19 @@
+[Event "first draft of exercises: filtered: light squared bishop 2 (existing crystals)"]
+[Site "lichess.org"]
+[Date "2025.03.07"]
+[Result "*"]
+[Annotator "https://lichess.org/@/Capybara_London"]
+[FEN "rnbqk2r/1p2bppp/p2p1n2/4p3/P3P3/2N2N2/1PP2PPP/R1BQKB1R w KQkq - 0 8"]
+[Variant "From Position"]
+[ECO "?"]
+[Opening "?"]
+[StudyName "first draft of exercises: filtered"]
+[ChapterName "exercise 11 (bishop placement)"]
+[SetUp "1"]
+[ChapterMode "gamebook"]
+
+{ Find the most active square for the f1-bishop. }
+{ Choose between [8.Be2] [8.Bd3] [8.Bc4] }
+{ Make a move when you are ready! }
+
+8. Bc4!

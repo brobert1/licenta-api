@@ -1,0 +1,16 @@
+[Event "Jobava London: essential theory: The ...Bd6 lines (Boa-Snake structure)"]
+[Site "https://lichess.org/study/1nmNtv4s/2TE7WHkC"]
+[Result "*"]
+[Variant "Standard"]
+[ECO "D01"]
+[Opening "Rapport-Jobava System"]
+[Annotator "https://lichess.org/@/RoyalFlushDraw"]
+[StudyName "Jobava London: essential theory"]
+[ChapterName "The ...Bd6 lines (Boa-Snake structure)"]
+[UTCDate "2025.01.16"]
+[UTCTime "17:12:08"]
+
+1. d4 d5 2. Nc3 Nf6 3. Bf4 e6 4. e3 Bd6 5. Bd3 Bxf4 6. exf4 O-O { Most people will castle when possible, but you need to have awareness for the quick ...c5-pushers and be ready to meet ...b6/Nbd7 with Nce2 (preparing to meet ...c5 with c3). } (6... Nbd7 { [%cal Rc7c5] } 7. Nce2! (7. Nf3?! c5 8. dxc5 Nxc5 $132 { [%csl Rd3][%cal Gc5d3] }) 7... c5 8. c3! { [%cal Rc5c4,Gd3c2] } 8... c4 9. Bc2 O-O 10. Nf3 b5 11. O-O Bb7 12. Ng3 a5 13. Ne5 Nxe5 14. fxe5 Nd7 15. f4 $16 { [%cal Gf4f5,Gf5f6] }) (6... Qd6 { [%csl Rf4][%cal Gd6f4] } 7. g3 (7. Nce2?! $15 { The ideal move has a concrete drawback. } { [%csl Re1,Rb2,Rb4][%cal Rd6b4,Rb4e1,Rb4b2] }) 7... Qb4 8. a3! { [%csl Rb4][%cal Ga3b4] } 8... Qxb2?? 9. Na4 { [%csl Rb2][%cal Ga4b2] } 9... Qxd4 10. Bb5+ Nc6 11. Qxd4 $18) (6... b6 { [%cal Rc7c5] } 7. Nce2! (7. Nf3?! c5 8. dxc5 bxc5 $132 { [%csl Rd3][%cal Gc5c4] }) 7... c5 8. c3! $10 { transposing to the 7...b6 lines. Gotta watch out for black's threat! }) 7. Nf3 Nc6?! { The most common positional mistake below 1500 elo:
+-blocking black's access to fight for the center with ...c5! } { [%csl Rc6][%cal Gc7c5] } (7... c5!? 8. dxc5 Qc7 { [%csl Rc5,Rf4][%cal Gc7c5,Gc7f4] } 9. Ne2! { [%csl Gf4][%cal Ge2f4,Gc2c3,Ge2d4] } 9... Qxc5 10. O-O Nc6 11. c3 Bd7 12. Ned4! Nxd4 13. Nxd4 $14 { [%cal Gf1e1,Gd1e2,Ga1d1] }) (7... b6 8. Ne2 c5 9. c3 { [%cal Rc5c4,Gd3c2] } 9... Ba6! 10. Bxa6 Nxa6 11. O-O $10 { [%cal Ge2g3,Gf4f5] }) 8. O-O { This is what you are going to see in most Boa-snake games. } 8... Re8 9. Ne2! b6 (9... Ne4 10. c3 f5 11. Ne5! { Important nuance for the Boa-snake:
+-going Ng3 is pointless after black pushes ...f5!
+*quite often if black meets Ng3 with f5, the best move is to play Ne2! } { [%cal Gf2f3] } 11... Nxe5 12. fxe5 Bd7 13. f3 Ng5 14. Qd2 $16 { We are going to slowly organize the g4-break with moves like Qe3 (protecting the f3-pawn) and then Kh1-Rg1-g4 (recapturing with the rook). } { [%cal Gd2e3,Gg1h1,Gf1g1,Gg2g4] }) (9... Nb4 10. c3 Nxd3 11. Qxd3 Ne4 12. Ng3 Nxg3 13. hxg3! { Important move, many people make the mistake of recapturing with the f-pawn. The key idea is that we are going to attack by using the h-file. } 13... Bd7 14. g4 { [%cal Gg2g3,Gg1g2,Gf1h1] } 14... Qf6 { [%csl Rf4][%cal Gf6f4] } 15. g3 Rad8 16. Kg2 a6 17. Rh1 { [%csl Rh7][%cal Gd3h7] } 17... g6 18. g5 Qg7 19. Ne5 $16 { All focus is on the backward h7-pawn. } { [%csl Rh7][%cal Ge5g4,Gg4f6,Gh1h6,Ga1h1] }) 10. c3 Bb7 11. Ng3 h6 12. Ne5 Nxe5 13. fxe5 Nd7 14. f4 $16 { [%cal Gf4f5,Gf5f6] } *

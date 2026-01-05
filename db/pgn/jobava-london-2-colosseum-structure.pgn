@@ -1,0 +1,19 @@
+[Event "Jobava London: essential theory: The ...Bb4 pin (Colosseum structure)"]
+[Site "https://lichess.org/study/1nmNtv4s/Kn5IuGDt"]
+[Result "*"]
+[Variant "Standard"]
+[ECO "D01"]
+[Opening "Rapport-Jobava System"]
+[Annotator "https://lichess.org/@/RoyalFlushDraw"]
+[StudyName "Jobava London: essential theory"]
+[ChapterName "The ...Bb4 pin (Colosseum structure)"]
+[UTCDate "2025.01.16"]
+[UTCTime "16:36:49"]
+
+1. d4 d5 2. Nc3 Nf6 3. Bf4 e6 4. e3 Bb4 5. Bd3 O-O (5... Bxc3+ 6. bxc3 O-O 7. Nf3 Nc6 8. O-O Re8 9. c4! { White has a simple plan to exchange the c-pawns for enemy central pawns. *you can remember this easier as the 'double c4 line' } 9... dxc4 (9... h6 10. cxd5 Nxd5 { [%csl Rf4][%cal Rd5f4] } 11. Bg3! a6 12. c4 Ndb4 { [%csl Rd3][%cal Rb4d3] } 13. Be2 $14 { [%csl Ge2,Gg3][%cal Ga2a3] }) (9... a6 10. cxd5 exd5 11. c4 $14 { Colosseum structure conclusion:
+-as long as you keep the bishop pair and push the double c4, you are having a blast! }) 10. Bxc4 a6 11. Bd3 { [%cal Gc2c4] } 11... b5 12. c4 $14) (5... Ne4 { [%csl Rc3][%cal Ge4c3,Gb4e1] } 6. Ne2! { Jobava rule:
+-we only play Nge2 if black is threatening to win a pawn on c3
+*people often make the mistake to automatically play Nge2 vs Bb4 } 6... Nxc3 7. Nxc3 O-O 8. O-O Nc6 9. a3! Bd6 (9... Bxc3 10. bxc3 $14 { Double c4 next, with a good position. } { [%cal Gc3c4] }) (9... Ba5 10. b4 Bb6 11. Na4 $14 { [%csl Rb6][%cal Ga4b6,Gc2c4] }) (9... Be7 10. Ne2 $14 { When the e4-push doesn't work well, it's usually a sign that the c4-break works nicely, focusing on the queenside. } { [%cal Gc2c4] }) 10. Qf3!? Bxf4 11. Qxf4 f5 12. Ne2 $14 { [%cal Gc2c4] }) 6. Nf3! { In general, the knight is much more active after 6.Nf3 (pressuring the center) compared to 6.Nge2?! } (6. Ne2?! { common opening mistake:
+-thinking that Nge2 is always the best move vs ...Bb4
+*we only do it if black is threatening to win a pawn }) 6... Ne4 { Black is threatening to win a pawn on c3 and we can't play Nge2 anymore! What now genius? } 7. O-O! { Sacrificing the pawn by castling is a common idea to punish black's time consuming operation in many openings
+(Nimzo-Indian comes to mind). } 7... Nxc3 (7... Bxc3 8. bxc3 Nxc3 9. Qe1! { Weird, but important because Qd2 allows Ne4 with the gain of a tempo. } { [%csl Rc3][%cal Ge1c3] } 9... Ne4 10. c4 c6 11. Qb1! { [%csl Rh7,Re4][%cal Gb1h7] } 11... f5 12. a4 $44 { this position occurs rarely in practise, but white has great compensation with bishop pair and active pieces. } { [%csl Gd3,Gf4][%cal Ga4a5,Gh2h3,Gf1c1] }) (7... f5 8. Ne2! $14 { we always must have some pawn play available, so when the e4-push is not available we must focus on the queenside play with c4. } { [%cal Gc2c4] }) 8. bxc3 Bxc3 9. Bxh7+!! (9. Rb1 { It's not a tragedy if you forget the main idea either. White has good compensation even after the normal moves: } 9... h6 10. Rb3 Ba5 11. Ne5 $44 { with Qh5 coming next (preparing Bxh6 ideas), white is getting pretty decent attacking chances. This is happening because black doesn't have an f6-knight. } { [%cal Gd1h5] }) 9... Kxh7 10. Ng5+ Kg8 (10... Kg6 11. Qd3+ f5 12. Qxc3 $18 { white is much better with any move, but specifically e4-Qg3 is a deadly combo. } { [%cal Ge3e4,Gc3g3] }) (10... Kh6?? 11. Nxf7+ $18 { [%csl Rd8,Rh6,Gf7][%cal Gf7d8,Gf7h6,Gf4h6] }) 11. Qh5 { If black doesn't sacrifice the queen, this will be leading to a thematic forced mate. The key idea which makes the 'Greek-gift' work is that black is unable to protect the h7-square! } { [%csl Rh7][%cal Gh5h7] } 11... Re8 12. Qxf7+ Kh8 13. Qh5+ Kg8 14. Qh7+ Kf8 15. Qh8+ Ke7 16. Qxg7# *

@@ -1,0 +1,34 @@
+[Event "Jobava London: essential theory: Pawn storm"]
+[Site "https://lichess.org/study/1nmNtv4s/3CZWMs9g"]
+[Result "*"]
+[Variant "Standard"]
+[ECO "D00"]
+[Opening "Queen's Pawn Game: Chigorin Variation, Alburt Defense"]
+[Annotator "https://lichess.org/@/RoyalFlushDraw"]
+[StudyName "Jobava London: essential theory"]
+[ChapterName "Pawn storm"]
+[UTCDate "2025.01.16"]
+[UTCTime "16:18:54"]
+
+1. d4 d5 2. Nc3 Bf5 (2... Nc6 { Copy cat is always possible in low elo. The good news is that we can get some of the most satisfying wins ever. } 3. Bf4 Bf5 4. e4! { If black mirrors the first 3 moves, this is the best way to break the symmetry. Of course, it's not a disaster if you forget and play 4.f3 by any means. } 4... dxe4?! (4... Bxe4! { Only happens in about 10% of the games. } 5. Nxe4 dxe4 6. d5 Nb4 7. c4 $14 { [%cal Ga2a3] }) 5. d5! { [%csl Rc6][%cal Gd5c6] } 5... Nb4 6. a3 Na6 7. Qd4 e6 8. Bb5+ c6 9. dxc6 Qxd4 10. cxb7+ Ke7 11. bxa8=Q $18 { I've had this position countless times. }) (2... a6 3. Bf4 Nc6 4. e3 Bf5 5. e4! { back to the same Copy-Cat lines. Including ...a6 doesn't change much. }) 3. f3 { Jobava London rule:
+-Bf5 triggers the f3-move
+In this particular position it comes with a concrete threat of taking the center with e4! Black has two options:
+3...Nf6 (leading to normal Pawn Storm lines)
+3...e6 (allowing the central storm with e4) } { [%cal Ge2e4] } 3... Nf6 (3... e6 4. e4! dxe4 5. fxe4 Bg6 (5... Qh4+?? 6. g3 $18 { [%csl Rh4,Rf5][%cal Gg3h4,Ge4f5] }) 6. Nf3 Bb4 7. Bd3 Nf6 8. O-O Bxc3 9. bxc3 { This is the standard development for the central storm. Now black has a choice between accepting the pawn sacrifice or not: } 9... Nxe4 (9... O-O 10. e5! Bxd3 11. Qxd3 { The pawn recapture is also fine, but we have a nice combo coming next. } 11... Nd5 12. Ng5! g6 13. Qh3! h5 14. g4 $18 { [%csl Rg8] }) 10. Qe1! { [%csl Gc3,Re4][%cal Ge1c3,Gd3e4] } 10... Nf6 11. Ne5 Bxd3 12. cxd3 O-O 13. Bg5 $18 { [%csl Rf6][%cal Ge1h4] }) 4. Bf4 { If black stops the e4-push, we are back to the normal pawn storm lines. } 4... e6 5. g4 Bg6 6. h4 h6 (6... h5 7. g5! { Once you remember to include this key move, the development scheme is very similar to the 6...h6 lines. } 7... Nfd7 8. e3 Bd6 (8... a6 9. Bd3 Bxd3 10. Qxd3 { [%cal Gg5g6] } 10... g6 11. Nge2 Bg7 12. O-O-O O-O 13. e4 { [%csl Rd5][%cal Ge4d5] } 13... c6 14. Ng3 b5 15. Nce2 Qa5 { [%csl Ra2][%cal Ga5a2] } 16. Kb1 Nb6 17. Nxh5!! { The only idea to get the ball ralling against the h5-iceberg. Luckily for us, it's insanely powerful and underrated. } 17... gxh5 18. Ng3 Nc4 19. Nxh5 Qb4 { [%csl Rb2][%cal Gb4b2] } 20. Bc1 Nd7 21. e5 { [%cal Gh5f6] } 21... c5 22. Rdg1 cxd4 23. Nf6+ Nxf6 24. gxf6 $18) 9. Nh3! O-O 10. Bd3 Bxd3 11. Qxd3 g6 12. O-O-O Nc6 13. Bxd6! { We make this trade specifically to optimize the knight from the rim. } { [%cal Gh3f4] } 13... cxd6 14. Nf4 { [%csl Re6,Rg6][%cal Gf4e6,Gf4g6] } 14... Kg7 15. e4 dxe4 16. fxe4 $14 { [%csl Rg7][%cal Gf4h5,Gh1f1,Gd3f3] }) 7. e3! (7. h5?! { IMPORTANT NUANCE:
+-I prefer to delay this move so we can keep options to push g5 and recapture with the pawn later on (making life difficult for the f6-knight). }) 7... Bd6 (7... Bb4 8. Bd3 Bxc3+ 9. bxc3 Bxd3 10. cxd3! { Long castle is no longer an option with the doubled pawns, so taking with the queen losses it's purpose. } 10... Nc6 11. Ne2 Qe7 12. Rb1 Rb8 13. Kf2 $14 { [%cal Gg4g5] }) (7... a6 8. Bd3 Bxd3 9. Qxd3 Bd6 10. Nge2! { ideally we prefer Nge2 over Nh3 unless it's blocking the light squared bishop (not the case here). This will most likely transpose to our main line. } { [%cal Ge1c1,Gg4g5] }) (7... c6 8. Bd3 Bd6? { this is a common mistake for low elo. Trading bishops is a must for black (8...Bxd3! with similar play to the main line). } 9. Bxg6! fxg6 10. Qd3! { The biggest problem for black is that it's not easy to protect the g6-pawn at all. } { [%csl Rg6][%cal Gd3g6] } 10... Kf7 11. Nge2 Na6 12. Bxd6! Qxd6 13. Nf4 $18 { Common scenario for a quick win. } { [%csl Rg6][%cal Gd3g6] }) 8. Nh3! { Pawn Storm rule of thumb:
+-we want to recapture on f4 with the knight } (8. Nge2?! $13 { We generally prefer this move over Nh3 unless it's blocking the f1-bishop. The knight is better placed closer to the center than on the rim, but keeping the Bd3 option is an important nuance to get smooth development. } { [%csl Rf1] }) 8... Bxf4?! { Common trading mistake for low elo, improving white's knight. } (8... Nc6 { Delaying the trade is black's best bet to keep it equal: } 9. Bd3 Bxd3 10. Qxd3 Qd7 11. O-O-O O-O-O 12. Bxd6! { We never push g5 with the knight on the rim. If the h3-knight was on e2...it's ok to push g5 right away. } 12... Qxd6 13. Nf4 Kb8 14. g5! hxg5 15. hxg5 Nd7 16. g6! f6 (16... fxg6 17. Qxg6 $14 { [%csl Re6,Rg7][%cal Gg6e6,Gg6g7] }) 17. Rh7 $36 { Position should be equal with correct play, but white's extra space secures an edge from my experience. }) 9. Nxf4 { [%csl Rg6][%cal Gf4g6] } 9... Bh7 10. Bd3 Bxd3 11. Qxd3 Nbd7 12. O-O-O (12. g5?? { must be castled before attacking...unless some unwanted consequences could appear: } 12... hxg5 13. hxg5 Rxh1+ { At least if you make this mistake you probably hold the world record for material losses in the span of two moves! } { [%csl Ra1][%cal Gh1a1] }) 12... Qe7 13. g5 hxg5 14. hxg5 Rxh1 15. Rxh1 Ng8 16. Qh7 $36 { This is what I call 'the PACMAN-queen' because in most games white ends up collecting black's pawns one by one. } { [%csl Rg8,Rg7,Gh7][%cal Gh7g8,Gh7g7] } *
+
+
+[Event "Jobava London: essential theory: English Attack"]
+[Site "https://lichess.org/study/1nmNtv4s/32UO1nAK"]
+[Result "*"]
+[Variant "Standard"]
+[ECO "B07"]
+[Opening "Pirc Defense"]
+[Annotator "https://lichess.org/@/RoyalFlushDraw"]
+[StudyName "Jobava London: essential theory"]
+[ChapterName "English Attack"]
+[UTCDate "2025.01.16"]
+[UTCTime "17:46:06"]
+
+1. d4 Nf6 2. Nc3 g6 (2... d5 { [%csl Bd5] } 3. Bf4 { for Jobava to be possible we need black to put a pawn in the center (d5), otherwise we are playing the 'english attack' scheme. } { [%csl Bd5] }) 3. e4 d6 4. f3 { Preparing to play Be3 without allowing ...Ng4! } { [%cal Gc1e3,Rf6g4] } 4... Bg7 5. Be3 O-O 6. Qd2 c6 (6... e5 7. d5 c6 8. O-O-O cxd5 9. exd5 Nbd7 10. g4 Nb6 11. h4 Bd7 12. h5 $40) 7. O-O-O { This is our universal set-up when black is not fighting for the center with pawns. } 7... b5 8. Bh6! { Preparing to push h4-h5 without allowing black to slow us down with ...h5! } { [%cal Gh2h4,Gh4h5] } (8. h4?! h5 $13) 8... a5 9. h4 b4 10. Nce2 a4 11. h5 b3 (11... Nxh5 12. g4 Nf6 13. Bxg7 Kxg7 14. Qh6+ Kg8 15. e5 $18) 12. cxb3 axb3 13. a3 Nbd7 14. hxg6 fxg6 15. Bxg7 Kxg7 16. Qh6+ Kg8 17. e5! { [%csl Gd1,Rd8] } 17... Nh5 18. g4 $18 *

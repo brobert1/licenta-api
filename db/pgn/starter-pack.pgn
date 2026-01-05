@@ -1,0 +1,203 @@
+[Event "Starter pack (prototype): Few words about the platform (INSTRUCTIONAL)"]
+[Result "*"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[StudyName "Starter pack (prototype)"]
+[ChapterName "Few words about the platform (INSTRUCTIONAL)"]
+[UTCDate "2025.04.16"]
+[UTCTime "15:30:43"]
+[Annotator "https://lichess.org/@/RoyalFlushDraw"]
+[ChapterURL "https://lichess.org/study/8tMJrAWn/gtCB4zKp"]
+
+{ In the left side of the screen you have the option to select any line you want to train, but just remember that your dear author recommends starting in chronological order.
+
+Behind the board you will always see two buttons that can start a drill mode:
+1.drill with arrows (based on arrows + piece highlight)
+-your best friend when encountering new variations
+2.drill without arrows (no help of any kind, only if you want it)
+-this mode is supposed to really cement the ideas in your brain and it's the final test before moving to a new variation
+
+To enhance the learning experience, I suggest the following workflow for every new variation that you are trying to learn:
+-at first we drill 'with arrows' until no mistakes are made
+-then we drill using the 'without' button until no mistakes are made
+-once you are comfortable drilling the line without help, then it's time to select 'next variation' and repeat the process }
+ *
+
+
+[Event "Starter pack (prototype): Repertoire structure (INSTRUCTIONAL)"]
+[Result "*"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[StudyName "Starter pack (prototype)"]
+[ChapterName "Repertoire structure (INSTRUCTIONAL)"]
+[UTCDate "2025.04.15"]
+[UTCTime "19:58:56"]
+[Annotator "https://lichess.org/@/RoyalFlushDraw"]
+[ChapterURL "https://lichess.org/study/8tMJrAWn/6uPdc6tm"]
+
+{ The repertoire will be split into 5 thematic structures.
+
+Black doesn't fight for the center:
+1.English Attack: triggered by Black not playing ...d5
+(1.d4 Nf6 2.Nc3 g6 3.e4 d6 4.f3 Bg7 5.Be3)
+
+Black plays light squared bishop INSIDE the pawn chain:
+2.Colosseum structure: resulting from ...Bb4 pin
+(1.d4 d5 2.Nc3 Nf6 3.Bf4 e6 4.e3 Bb4 5.Bd3 Bxc3+ 6.bxc3)
+3.Boa Snake structure: resulting from ...Bd6 move
+(1.d4 d5 2.Nc3 Nf6 3.Bf4 e6 4.e3 Bd6 5.Bd3 Bxf4 6.exf4)
+4.Pandora's box: resulting from ...Be7 move
+(1.d4 d5 2.Nc3 Nf6 3.Bf4 e6 4.e3 Be7 5.Bd3 c6 6.Nf3 0-0 7.0-0 Nbd7 8.e4)
+
+Black plays light squared bishop OUTSIDE the pawn chain
+5.Pawn storm structure: triggered by ...Bf5/Bg4 move
+(1.d4 d5 2.Nc3 Nf6 3.Bf4 Bf5 4.f3)
+
+To get your foot in the door, I've prepared the most important seven variations. These are gonna be enough to start playing 1.d4 in your games (in case you never did before).
+
+The starter-pack ends with the 'BIG QUIZ' which is just a compilation of all the 7 trainables. If you can solve that one without arrows, congrats! You have mastered the starter-pack.
+
+This is pretty much all you need to know about how the platform works, the rest will be easy to figure out along the way...so I invite you to press 'next chapter' and dive into the quiz. }
+ *
+
+
+[Event "Starter pack (prototype): English Attack (TRAINABLE)"]
+[Result "*"]
+[Variant "Standard"]
+[ECO "B07"]
+[Opening "Pirc Defense"]
+[StudyName "Starter pack (prototype)"]
+[ChapterName "English Attack (TRAINABLE)"]
+[UTCDate "2025.04.15"]
+[UTCTime "19:07:51"]
+[Annotator "https://lichess.org/@/RoyalFlushDraw"]
+[ChapterURL "https://lichess.org/study/8tMJrAWn/p0OYoqUs"]
+
+{ Sorry I lied, there is one last thing you need to know before the fun begins!
+
+This is how files will look in the move trainer tab. You have the option to click around the moves and see what you are about to train. Remember that this mode is optimized for drills, so in case you want a clearer overview of the whole repertoire, make sure to study using the reading mode.
+
+Now that you were patient and followed my instructions, it's time to reward you with your first drill. Look behind the board and press the drill 'with arrows' button. } { [%csl Gd2] }
+1. d4 Nf6 { [%cal Gb1c3] } 2. Nc3 g6 { [%cal Ge2e4] } 3. e4 { It's critical to understand that if Black doesn't put a pawn in the center with 3...d5, we can no longer play our lovely Jobava London.
+<br>
+The good news is that whenever Black goes for a strange opening in his own third, you can always apply the same developing scheme with f3-Be3-Qd2-0-0-0-g4-h4 and storm on the kingside. } 3... d6 4. f3 { Important to start with f3 before 4.Be3 because 4...Ng4 ideas can be pretty annoying to deal with. } 4... Bg7 { [%csl Gc1] } 5. Be3 O-O { [%csl Gd1] } 6. Qd2 Nbd7 7. O-O-O { Many players make the mistake of rushing with 7.Bh6, breaking a fundamental rule:
+-we don't start concrete actions before castling } 7... b6 8. Bh6 { Important to do this first because 8.h4 allows Black to play 8...h5! and it becomes much more difficult to break on the kingside. } 8... Bb7 9. h4! { For the same reason we avoid the immediate trade of bishops as that would again...allow our opponent to meet 9.Bxg7 Kxg7 10.h4 with the annoying 10...h5!
+<br>
+The funny part about this attack is that you can ignore developing the f1-bishop and the g1-knight simply because they don't have an impactful square. This doesn't make them bad pieces by any means...they are just waiting for a convinient moment to make their presence felt. } 9... a5 10. h5 $40 *
+
+
+[Event "Starter pack (prototype): Colosseum structure with 10...exd5 (TRAINABLE)"]
+[Result "*"]
+[Variant "Standard"]
+[ECO "D01"]
+[Opening "Rapport-Jobava System"]
+[StudyName "Starter pack (prototype)"]
+[ChapterName "Colosseum structure with 10...exd5 (TRAINABLE)"]
+[UTCDate "2025.04.15"]
+[UTCTime "19:11:36"]
+[Annotator "https://lichess.org/@/RoyalFlushDraw"]
+[ChapterURL "https://lichess.org/study/8tMJrAWn/1MbMWxvK"]
+[ChapterMode "gamebook"]
+
+{ [%cal Gd2d4] }
+1. d4 d5 2. Nc3 Nf6 3. Bf4 e6 4. e3 Bb4 5. Bd3 Bxc3+ 6. bxc3 O-O 7. Nf3 Nc6 8. O-O Re8 9. c4 a6 10. cxd5 exd5 11. c4 $14 *
+
+
+[Event "Starter pack (prototype): Colloseum structure with 10...Nxd5 (TRAINABLE)"]
+[Result "*"]
+[Variant "Standard"]
+[ECO "D01"]
+[Opening "Rapport-Jobava System"]
+[StudyName "Starter pack (prototype)"]
+[ChapterName "Colloseum structure with 10...Nxd5 (TRAINABLE)"]
+[UTCDate "2025.04.15"]
+[UTCTime "19:14:40"]
+[Annotator "https://lichess.org/@/RoyalFlushDraw"]
+[ChapterURL "https://lichess.org/study/8tMJrAWn/aFBlVtLI"]
+[ChapterMode "gamebook"]
+
+1. d4 d5 2. Nc3 Nf6 3. Bf4 e6 4. e3 Bb4 5. Bd3 Bxc3+ 6. bxc3 O-O 7. Nf3 Nc6 8. O-O Re8 9. c4 a6 10. cxd5 Nxd5 11. Bg3 Ndb4 12. Be2 { [%cal Gc2c4,Ga2a3] } *
+
+
+[Event "Starter pack (prototype): Boa-Snake structure (TRAINABLE)"]
+[Result "*"]
+[Variant "Standard"]
+[ECO "D01"]
+[Opening "Rapport-Jobava System"]
+[StudyName "Starter pack (prototype)"]
+[ChapterName "Boa-Snake structure (TRAINABLE)"]
+[UTCDate "2025.04.15"]
+[UTCTime "19:21:39"]
+[Annotator "https://lichess.org/@/RoyalFlushDraw"]
+[ChapterURL "https://lichess.org/study/8tMJrAWn/HSs0YJwA"]
+[ChapterMode "gamebook"]
+
+1. d4 d5 2. Nc3 Nf6 3. Bf4 e6 4. e3 Bd6 5. Bd3 Bxf4 6. exf4 O-O 7. Nf3 Nc6 8. O-O Bd7 9. Ne2 a6 10. c3 { [%csl Gb2,Gc3,Gd4][%cal Gb2c3,Gc3d4] } 10... b5 11. Ng3 { [%cal Gf3e5] } *
+
+
+[Event "Starter pack (prototype): Pandora's box (TRAINABLE)"]
+[Result "*"]
+[Variant "Standard"]
+[ECO "D01"]
+[Opening "Rapport-Jobava System"]
+[StudyName "Starter pack (prototype)"]
+[ChapterName "Pandora's box (TRAINABLE)"]
+[UTCDate "2025.04.15"]
+[UTCTime "19:17:54"]
+[Annotator "https://lichess.org/@/RoyalFlushDraw"]
+[ChapterURL "https://lichess.org/study/8tMJrAWn/Xv2o6qYa"]
+[ChapterMode "gamebook"]
+
+1. d4 d5 2. Nc3 Nf6 3. Bf4 c6 4. e3 e6 5. Bd3 Be7 6. Nf3 O-O 7. O-O Nbd7 8. e4 dxe4 9. Nxe4 Nxe4 10. Bxe4 Nf6 11. Bd3 { [%cal Gf1e1,Gc2c3,Gd1e2,Ga1d1] } *
+
+
+[Event "Starter pack (prototype): Pawn Storm with ...h6 (TRAINABLE)"]
+[Result "*"]
+[Variant "Standard"]
+[ECO "D01"]
+[Opening "Rapport-Jobava System"]
+[StudyName "Starter pack (prototype)"]
+[ChapterName "Pawn Storm with ...h6 (TRAINABLE)"]
+[UTCDate "2025.04.15"]
+[UTCTime "19:23:36"]
+[Annotator "https://lichess.org/@/RoyalFlushDraw"]
+[ChapterURL "https://lichess.org/study/8tMJrAWn/lyrYJwAI"]
+[ChapterMode "gamebook"]
+
+1. d4 d5 2. Nc3 Nf6 3. Bf4 Bf5 4. f3 e6 5. g4 Bg6 6. h4 h6 7. e3 Nc6 8. Bd3 Bxd3 9. Qxd3 Bd6 10. Nge2 Bxf4 11. Nxf4 Qe7 12. O-O-O { [%cal Gg4g5] } *
+
+
+[Event "Starter pack (prototype): Pawn storm with ...h5 (TRAINABLE)"]
+[Result "*"]
+[Variant "Standard"]
+[ECO "D01"]
+[Opening "Rapport-Jobava System"]
+[StudyName "Starter pack (prototype)"]
+[ChapterName "Pawn storm with ...h5 (TRAINABLE)"]
+[UTCDate "2025.04.15"]
+[UTCTime "19:25:05"]
+[Annotator "https://lichess.org/@/RoyalFlushDraw"]
+[ChapterURL "https://lichess.org/study/8tMJrAWn/UWSJDoMl"]
+[ChapterMode "gamebook"]
+
+1. d4 d5 2. Nc3 Nf6 3. Bf4 Bf5 4. f3 e6 5. g4 Bg6 6. h4 h5 7. g5 Nfd7 8. e3 Nc6 9. Bd3 Bxd3 10. Qxd3 g6 11. O-O-O Bd6 12. Nge2 *
+
+
+[Event "Starter pack prototype: English Attack"]
+[Site "lichess.org"]
+[Date "2025.04.15"]
+[Result "*"]
+[Annotator "https://lichess.org/@/RoyalFlushDraw"]
+[GameId "2166990815494144"]
+[Variant "Standard"]
+[ECO "D01"]
+[Opening "Rapport-Jobava System"]
+[StudyName "Starter pack (prototype)"]
+[ChapterName "BIG QUIZ (TRAINABLE)"]
+[ChapterURL "https://lichess.org/study/8tMJrAWn/i6tF7p93"]
+
+1. d4 d5 (1... Nf6 2. Nc3 g6 3. e4 d6 4. f3 Bg7 5. Be3 O-O 6. Qd2 Nbd7 7. O-O-O b6 8. Bh6 Bb7 9. h4) 2. Nc3 Nf6 3. Bf4 e6 (3... c6 4. e3 e6 5. Bd3 Be7 6. Nf3 O-O 7. O-O Nbd7 8. e4 dxe4 9. Nxe4 Nxe4 10. Bxe4 Nf6 11. Bd3) (3... Bf5 4. f3 e6 5. g4 Bg6 6. h4 h6 (6... h5 7. g5 Nfd7 8. e3 Nc6 9. Bd3 Bxd3 10. Qxd3 g6 11. O-O-O Bd6 12. Nge2) 7. e3 Nc6 8. Bd3 Bxd3 9. Qxd3 Bd6 10. Nge2 Bxf4 11. Nxf4 Qe7 12. O-O-O) 4. e3 Bb4 (4... Bd6 5. Bd3 Bxf4 6. exf4 O-O 7. Nf3 Nc6 8. O-O Bd7 9. Ne2 a6 10. c3 b5 11. Ng3) 5. Bd3 Bxc3+ 6. bxc3 O-O 7. Nf3 Nc6 8. O-O Re8 9. c4 a6 10. cxd5 exd5 (10... Nxd5 11. Bg3 Ndb4 12. Be2) 11. c4 $14 *
+
+
