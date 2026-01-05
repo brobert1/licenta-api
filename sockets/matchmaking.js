@@ -18,7 +18,7 @@ export const addToQueue = async (socket, timeControl) => {
   }
 
   // Fetch user's current ELO
-  const user = await Identity.findById(userId).select('elo name').lean();
+  const user = await Identity.findById(userId).select('elo name image').lean();
   if (!user) {
     return null;
   }
@@ -28,6 +28,7 @@ export const addToQueue = async (socket, timeControl) => {
     socketId: socket.id,
     elo: user.elo || 1200,
     name: user.name,
+    image: user.image,
     timeControl,
     joinedAt: Date.now(),
   };

@@ -63,6 +63,7 @@ export const joinQueue = async (io, socket, { timeControl }) => {
           opponent: {
             name: blackPlayerEntry.name,
             elo: blackPlayerEntry.elo,
+            image: blackPlayerEntry.image,
           },
           timeControl: game.timeControl,
           fen: game.fen,
@@ -76,6 +77,7 @@ export const joinQueue = async (io, socket, { timeControl }) => {
           opponent: {
             name: whitePlayerEntry.name,
             elo: whitePlayerEntry.elo,
+            image: whitePlayerEntry.image,
           },
           timeControl: game.timeControl,
           fen: game.fen,
