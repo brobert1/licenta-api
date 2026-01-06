@@ -113,6 +113,7 @@ export const createLiveGame = async (whitePlayerEntry, blackPlayerEntry) => {
     timeControl: whitePlayerEntry.timeControl,
     whiteTimeRemaining: whitePlayerEntry.timeControl.initial * 1000,
     blackTimeRemaining: blackPlayerEntry.timeControl.initial * 1000,
+    lastMoveAt: new Date(), // Initialize when game starts
   });
 
   return game;

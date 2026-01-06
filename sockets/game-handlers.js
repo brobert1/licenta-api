@@ -162,8 +162,39 @@ export const makeMove = async (io, socket, { gameId, move }) => {
     const newUciMoves = [...game.uciMoves, result.from + result.to + (result.promotion || '')];
     const newPgn = chess.pgn();
 
-    // Calculate time remaining (simplified - not tracking real-time)
-    const increment = game.timeControl.increment * 1000;
+    // Calculate time consumption and remaining time
+    const now = new Date();
+    const incrementMs = game.timeControl.increment * 1000;
+
+    // Calculate new time remaining for the player who just moved
+    let newWhiteTime = game.whiteTimeRemaining;
+    let newBlackTime = game.blackTimeRemaining;
+
+    // Only deduct time if this is NOT the first move of the game
+    // (First move: clock hasn't started yet, just add increment if any)
+    const isFirstMove = game.uciMoves.length === 0;
+    
+    if (isFirstMove) {
+      // First move - don't deduct time, just add increment for the player who moved
+      if (isWhite) {
+        newWhiteTime = game.whiteTimeRemaining + incrementMs;
+      } else {
+        newBlackTime = game.blackTimeRemaining + incrementMs;
+      }
+    } else {
+      // Subsequent moves - calculate elapsed time and deduct
+      const lastMoveAt = game.lastMoveAt ? new Date(game.lastMoveAt) : now;
+      const elapsedMs = Math.max(0, now - lastMoveAt);
+
+      if (isWhite) {
+        // White just moved - subtract elapsed time, add increment
+        newWhiteTime = Math.max(0, game.whiteTimeRemaining - elapsedMs + incrementMs);
+      } else {
+        // Black just moved - subtract elapsed time, add increment  
+        newBlackTime = Math.max(0, game.blackTimeRemaining - elapsedMs + incrementMs);
+      }
+    }
+
     const updatedGame = await Game.findByIdAndUpdate(
       gameId,
       {
@@ -171,8 +202,9 @@ export const makeMove = async (io, socket, { gameId, move }) => {
         uciMoves: newUciMoves,
         pgn: newPgn,
         moves: newUciMoves.length,
-        ...(isWhite && { whiteTimeRemaining: game.whiteTimeRemaining + increment }),
-        ...(isBlack && { blackTimeRemaining: game.blackTimeRemaining + increment }),
+        whiteTimeRemaining: newWhiteTime,
+        blackTimeRemaining: newBlackTime,
+        lastMoveAt: now,
       },
       { new: true }
     );
@@ -318,6 +350,59 @@ export const gameAction = async (io, socket, { gameId, action }) => {
   } catch (err) {
     console.error('Error in gameAction:', err);
     socket.emit('actionError', { message: 'An error occurred' });
+  }
+};
+
+/**
+ * Handle timeout (flag fall) - when a player runs out of time
+ */
+export const handleTimeout = async (io, socket, { gameId }) => {
+  try {
+    const game = await Game.findById(gameId);
+    if (!game || game.status !== 'active') {
+      return socket.emit('timeoutError', { message: 'Game not found or not active' });
+    }
+
+    const userId = socket.user._id.toString();
+    const isWhite = game.whitePlayer.toString() === userId;
+    const isBlack = game.blackPlayer.toString() === userId;
+
+    if (!isWhite && !isBlack) {
+      return socket.emit('timeoutError', { message: 'Not a player in this game' });
+    }
+
+    // Determine whose turn it is - that player loses on time
+    const currentTurn = game.fen.split(' ')[1];
+    const result = currentTurn === 'w' ? '0-1' : '1-0';
+    const reason = currentTurn === 'w' ? 'White ran out of time' : 'Black ran out of time';
+
+    await Game.findByIdAndUpdate(gameId, {
+      status: 'completed',
+      result,
+    });
+
+    await updateEloRatings(gameId);
+
+    // Notify both players
+    const gameSockets = activeGames.get(gameId.toString());
+    if (gameSockets) {
+      [gameSockets.whiteSocketId, gameSockets.blackSocketId].forEach((sid) => {
+        const playerSocket = io.sockets.sockets.get(sid);
+        if (playerSocket) {
+          playerSocket.emit('gameOver', { result, reason });
+        }
+      });
+
+      // Clean up
+      activeGames.delete(gameId.toString());
+      socketToGame.delete(gameSockets.whiteSocketId);
+      socketToGame.delete(gameSockets.blackSocketId);
+    }
+
+    console.log(`Game ${gameId} ended by timeout: ${reason}`);
+  } catch (err) {
+    console.error('Error in handleTimeout:', err);
+    socket.emit('timeoutError', { message: 'An error occurred' });
   }
 };
 

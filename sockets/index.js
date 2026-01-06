@@ -47,6 +47,7 @@ export const initializeSockets = (server) => {
     socket.on('leaveQueue', () => gameHandlers.leaveQueue(io, socket));
     socket.on('makeMove', (data) => gameHandlers.makeMove(io, socket, data));
     socket.on('gameAction', (data) => gameHandlers.gameAction(io, socket, data));
+    socket.on('timeout', (data) => gameHandlers.handleTimeout(io, socket, data));
 
     socket.on('disconnect', () => {
       console.log(`User disconnected: ${socket.user._id}`);

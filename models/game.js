@@ -58,6 +58,7 @@ const schema = new Schema(
     },
     whiteTimeRemaining: Number,
     blackTimeRemaining: Number,
+    lastMoveAt: Date, // Timestamp of last move for time tracking
   },
   { timestamps: true }
 );
