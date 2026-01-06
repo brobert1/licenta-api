@@ -13,6 +13,13 @@ const schema = new Schema(
       enum: ['bot', 'live'],
       default: 'bot',
     },
+    // Chat control
+    chatStatus: {
+      type: String,
+      enum: ['initial', 'pending', 'active', 'rejected'],
+      default: 'initial',
+    },
+    chatRequestedBy: String, // 'white' or 'black'
     // For bot games - optional for live games
     user: {
       type: Schema.Types.ObjectId,
@@ -61,6 +68,16 @@ const schema = new Schema(
     lastMoveAt: Date, // Timestamp of last move for time tracking
     lastDrawOfferAt: Date, // Timestamp for cooldown
     lastDrawOfferBy: String, // 'white' or 'black'
+    // Chat messages (encrypted)
+    messages: [
+      {
+        sender: { type: Schema.Types.ObjectId, ref: 'identity' },
+        senderName: String,
+        content: String, // Encrypted message (base64)
+        iv: String, // Initialization vector for decryption
+        timestamp: { type: Date, default: Date.now },
+      },
+    ],
   },
   { timestamps: true }
 );

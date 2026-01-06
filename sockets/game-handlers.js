@@ -173,7 +173,7 @@ export const makeMove = async (io, socket, { gameId, move }) => {
     // Only deduct time if this is NOT the first move of the game
     // (First move: clock hasn't started yet, just add increment if any)
     const isFirstMove = game.uciMoves.length === 0;
-    
+
     if (isFirstMove) {
       // First move - don't deduct time, just add increment for the player who moved
       if (isWhite) {
@@ -190,7 +190,7 @@ export const makeMove = async (io, socket, { gameId, move }) => {
         // White just moved - subtract elapsed time, add increment
         newWhiteTime = Math.max(0, game.whiteTimeRemaining - elapsedMs + incrementMs);
       } else {
-        // Black just moved - subtract elapsed time, add increment  
+        // Black just moved - subtract elapsed time, add increment
         newBlackTime = Math.max(0, game.blackTimeRemaining - elapsedMs + incrementMs);
       }
     }
@@ -334,18 +334,15 @@ export const gameAction = async (io, socket, { gameId, action }) => {
     } else if (action === 'offerDraw') {
       // Spam prevention: Check if this player already offered a draw recently (1 minute cooldown)
       const playerColor = isWhite ? 'white' : 'black';
-      
-      if (
-        game.lastDrawOfferBy === playerColor && 
-        game.lastDrawOfferAt
-      ) {
+
+      if (game.lastDrawOfferBy === playerColor && game.lastDrawOfferAt) {
         const timeSinceLastOffer = Date.now() - new Date(game.lastDrawOfferAt).getTime();
         const cooldownMs = 60 * 1000; // 1 minute
-        
+
         if (timeSinceLastOffer < cooldownMs) {
           const remainingSeconds = Math.ceil((cooldownMs - timeSinceLastOffer) / 1000);
-          return socket.emit('actionError', { 
-            message: `Please wait ${remainingSeconds}s before offering a draw again.`
+          return socket.emit('actionError', {
+            message: `Please wait ${remainingSeconds}s before offering a draw again.`,
           });
         }
       }
@@ -353,7 +350,7 @@ export const gameAction = async (io, socket, { gameId, action }) => {
       // Update game with draw offer info
       await Game.findByIdAndUpdate(gameId, {
         lastDrawOfferBy: playerColor,
-        lastDrawOfferAt: new Date()
+        lastDrawOfferAt: new Date(),
       });
 
       // Notify opponent
@@ -490,5 +487,203 @@ export const disconnectSocket = (io, socket) => {
     // - Reconnection grace period
     // - Auto-resign after timeout
     console.log(`Player disconnected from active game ${gameId}`);
+  }
+};
+
+/**
+ * Handle sending a chat message in a live game
+ */
+export const sendMessage = async (io, socket, { gameId, message }) => {
+  try {
+    // Import encryption dynamically to avoid circular dependencies
+    const { encrypt } = await import('@functions/encryption');
+    const { Identity } = await import('@models');
+
+    const game = await Game.findById(gameId);
+    if (!game || game.status !== 'active') {
+      return socket.emit('messageError', { message: 'Game not found or not active' });
+    }
+
+    const userId = socket.user._id.toString();
+    const isWhite = game.whitePlayer.toString() === userId;
+    const isBlack = game.blackPlayer.toString() === userId;
+
+    if (!isWhite && !isBlack) {
+      return socket.emit('messageError', { message: 'Not a player in this game' });
+    }
+
+    const playerColor = isWhite ? 'white' : 'black';
+
+    // Validate message
+    const trimmedMessage = message?.trim();
+    if (!trimmedMessage || trimmedMessage.length === 0) {
+      return socket.emit('messageError', { message: 'Message cannot be empty' });
+    }
+
+    if (trimmedMessage.length > 200) {
+      return socket.emit('messageError', { message: 'Message too long (max 200 characters)' });
+    }
+
+    // Get sender info
+    const sender = await Identity.findById(userId).select('name');
+    const senderName = sender?.name || 'Unknown';
+
+    // Encrypt the message
+    const { encrypted, iv } = encrypt(trimmedMessage);
+    const timestamp = new Date();
+
+    // Determine chat flow based on status
+    let updateQuery = {
+      $push: {
+        messages: {
+          sender: userId,
+          senderName,
+          content: encrypted,
+          iv,
+          timestamp,
+        },
+      },
+    };
+
+    let newChatStatus = game.chatStatus;
+
+    // First message starts the request flow if initial
+    if (game.chatStatus === 'initial') {
+      newChatStatus = 'pending';
+      updateQuery.chatStatus = 'pending';
+      updateQuery.chatRequestedBy = playerColor;
+    }
+
+    // Save to database
+    await Game.findByIdAndUpdate(gameId, updateQuery);
+
+    // Broadcast logic
+    const gameIdStr = gameId.toString();
+    const gameSockets = activeGames.get(gameIdStr);
+
+    if (gameSockets) {
+      const messageData = {
+        gameId,
+        sender: userId,
+        senderName,
+        content: trimmedMessage, // Send decrypted to clients
+        timestamp,
+      };
+
+      const whiteSocket = io.sockets.sockets.get(gameSockets.whiteSocketId);
+      const blackSocket = io.sockets.sockets.get(gameSockets.blackSocketId);
+      const senderSocket = isWhite ? whiteSocket : blackSocket;
+      const opponentSocket = isWhite ? blackSocket : whiteSocket;
+
+      // Always send to sender so they see their own message
+      if (senderSocket) {
+        senderSocket.emit('messageReceived', messageData);
+      }
+
+      // Handle opponent visibility
+      if (newChatStatus === 'active') {
+        // Normal chat - send to opponent
+        if (opponentSocket) {
+          opponentSocket.emit('messageReceived', messageData);
+        }
+      } else if (newChatStatus === 'pending') {
+        // If this was the triggering message, notify opponent of request
+        if (game.chatStatus === 'initial' && opponentSocket) {
+          opponentSocket.emit('chatRequest', {
+            requestedBy: playerColor,
+            senderName,
+          });
+        }
+        // If already pending, we don't spam requests, just save message (invisible to opponent)
+      }
+      // If rejected, do nothing for opponent (message saved but invisible)
+    }
+
+    console.log(`Message sent in game ${gameId} by ${senderName} (Status: ${newChatStatus})`);
+  } catch (err) {
+    console.error('Error in sendMessage:', err);
+    socket.emit('messageError', { message: 'Failed to send message' });
+  }
+};
+
+/**
+ * Handle chat actions (accept, decline)
+ */
+export const chatAction = async (io, socket, { gameId, action }) => {
+  try {
+    const { decrypt } = await import('@functions/encryption'); // Need decrypt to send history
+    const game = await Game.findById(gameId);
+    if (!game || game.status !== 'active') {
+      return;
+    }
+
+    const userId = socket.user._id.toString();
+    const isWhite = game.whitePlayer.toString() === userId;
+    const isBlack = game.blackPlayer.toString() === userId;
+
+    if (!isWhite && !isBlack) return;
+
+    // Only allow action if status is pending
+    if (game.chatStatus !== 'pending') return;
+
+    // Only opponent can accept/decline
+    const requestor = game.chatRequestedBy; // 'white' or 'black'
+    const responderColor = isWhite ? 'white' : 'black';
+
+    if (requestor === responderColor) {
+      return socket.emit('messageError', { message: 'Cannot respond to own request' });
+    }
+
+    const gameIdStr = gameId.toString();
+    const gameSockets = activeGames.get(gameIdStr);
+    if (!gameSockets) return;
+
+    const whiteSocket = io.sockets.sockets.get(gameSockets.whiteSocketId);
+    const blackSocket = io.sockets.sockets.get(gameSockets.blackSocketId);
+    const requestorSocket = requestor === 'white' ? whiteSocket : blackSocket;
+    const responderSocket = responderColor === 'white' ? whiteSocket : blackSocket;
+
+    if (action === 'accept') {
+      // Activate chat
+      await Game.findByIdAndUpdate(gameId, { chatStatus: 'active' });
+
+      // Notify both
+      if (whiteSocket) whiteSocket.emit('chatActive');
+      if (blackSocket) blackSocket.emit('chatActive');
+
+      // Send buffered messages to the responder (the one who just accepted)
+      if (responderSocket && game.messages && game.messages.length > 0) {
+        game.messages.forEach((msg) => {
+          // Only send messages that belong to this chat session (could filter by date if needed)
+          // For now, we trust the array. decrypt and send.
+          try {
+            const content = decrypt(msg.content, msg.iv);
+            responderSocket.emit('messageReceived', {
+              gameId,
+              sender: msg.sender,
+              senderName: msg.senderName,
+              content,
+              timestamp: msg.timestamp,
+            });
+          } catch (e) {
+            console.error('Failed to decrypt message in backlog', e);
+          }
+        });
+      }
+    } else if (action === 'decline') {
+      // Reject chat
+      await Game.findByIdAndUpdate(gameId, { chatStatus: 'rejected' });
+
+      // Notify requestor
+      if (requestorSocket) {
+        requestorSocket.emit('chatRejected');
+      }
+      // Notify responder (to close the request card)
+      if (responderSocket) {
+        responderSocket.emit('chatRejected');
+      }
+    }
+  } catch (err) {
+    console.error('Error in chatAction:', err);
   }
 };
