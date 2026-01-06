@@ -7,7 +7,10 @@ export default async (req, res) => {
     throw error(404, 'Missing required params');
   }
 
-  const games = await Game.find({ 'user._id': me }).sort({ createdAt: -1 });
+  const games = await Game.find({
+    $or: [{ user: me }, { whitePlayer: me }, { blackPlayer: me }],
+    status: { $ne: 'active' },
+  }).sort({ createdAt: -1 });
 
   if (!games) {
     throw error(404, 'Resource not found');
