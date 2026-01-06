@@ -129,7 +129,7 @@ export const updateEloRatings = async (gameId) => {
     .lean();
 
   if (!game || game.type !== 'live' || game.status !== 'completed') {
-    return;
+    return null;
   }
 
   const whitePlayer = game.whitePlayer;
@@ -146,11 +146,14 @@ export const updateEloRatings = async (gameId) => {
     whiteScore = 0.5;
     blackScore = 0.5;
   } else {
-    return; // No result yet or aborted
+    return null; // No result yet or aborted
   }
 
   const newWhiteElo = calculateNewRating(whitePlayer.elo, blackPlayer.elo, whiteScore);
   const newBlackElo = calculateNewRating(blackPlayer.elo, whitePlayer.elo, blackScore);
+
+  const whiteEloDelta = newWhiteElo - whitePlayer.elo;
+  const blackEloDelta = newBlackElo - blackPlayer.elo;
 
   await Identity.findByIdAndUpdate(whitePlayer._id, { elo: newWhiteElo });
   await Identity.findByIdAndUpdate(blackPlayer._id, { elo: newBlackElo });
@@ -158,6 +161,11 @@ export const updateEloRatings = async (gameId) => {
   console.log(
     `ELO updated: ${whitePlayer._id} ${whitePlayer.elo} → ${newWhiteElo}, ${blackPlayer._id} ${blackPlayer.elo} → ${newBlackElo}`
   );
+
+  return {
+    white: { oldElo: whitePlayer.elo, newElo: newWhiteElo, delta: whiteEloDelta },
+    black: { oldElo: blackPlayer.elo, newElo: newBlackElo, delta: blackEloDelta },
+  };
 };
 
 /**

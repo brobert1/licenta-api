@@ -301,15 +301,29 @@ export const gameAction = async (io, socket, { gameId, action }) => {
         result,
       });
 
-      await updateEloRatings(gameId);
+      const eloChanges = await updateEloRatings(gameId);
 
-      // Notify both players
-      [gameSockets.whiteSocketId, gameSockets.blackSocketId].forEach((sid) => {
-        const playerSocket = io.sockets.sockets.get(sid);
-        if (playerSocket) {
-          playerSocket.emit('gameOver', { result, reason: 'resignation' });
-        }
-      });
+      // Notify both players with their ELO changes
+      const whiteSid = gameSockets.whiteSocketId;
+      const blackSid = gameSockets.blackSocketId;
+
+      const whiteSocket = io.sockets.sockets.get(whiteSid);
+      if (whiteSocket) {
+        whiteSocket.emit('gameOver', {
+          result,
+          reason: 'resignation',
+          eloChange: eloChanges?.white?.delta || 0,
+        });
+      }
+
+      const blackSocket = io.sockets.sockets.get(blackSid);
+      if (blackSocket) {
+        blackSocket.emit('gameOver', {
+          result,
+          reason: 'resignation',
+          eloChange: eloChanges?.black?.delta || 0,
+        });
+      }
 
       // Clean up
       activeGames.delete(gameId);
@@ -354,15 +368,26 @@ export const gameAction = async (io, socket, { gameId, action }) => {
         result: '1/2-1/2',
       });
 
-      await updateEloRatings(gameId);
+      const eloChanges = await updateEloRatings(gameId);
 
-      // Notify both players
-      [gameSockets.whiteSocketId, gameSockets.blackSocketId].forEach((sid) => {
-        const playerSocket = io.sockets.sockets.get(sid);
-        if (playerSocket) {
-          playerSocket.emit('gameOver', { result: '1/2-1/2', reason: 'agreement' });
-        }
-      });
+      // Notify both players with their ELO changes
+      const whiteSocket = io.sockets.sockets.get(gameSockets.whiteSocketId);
+      if (whiteSocket) {
+        whiteSocket.emit('gameOver', {
+          result: '1/2-1/2',
+          reason: 'agreement',
+          eloChange: eloChanges?.white?.delta || 0,
+        });
+      }
+
+      const blackSocket = io.sockets.sockets.get(gameSockets.blackSocketId);
+      if (blackSocket) {
+        blackSocket.emit('gameOver', {
+          result: '1/2-1/2',
+          reason: 'agreement',
+          eloChange: eloChanges?.black?.delta || 0,
+        });
+      }
 
       // Clean up
       activeGames.delete(gameId);
@@ -413,17 +438,28 @@ export const handleTimeout = async (io, socket, { gameId }) => {
       result,
     });
 
-    await updateEloRatings(gameId);
+    const eloChanges = await updateEloRatings(gameId);
 
-    // Notify both players
+    // Notify both players with their ELO changes
     const gameSockets = activeGames.get(gameId.toString());
     if (gameSockets) {
-      [gameSockets.whiteSocketId, gameSockets.blackSocketId].forEach((sid) => {
-        const playerSocket = io.sockets.sockets.get(sid);
-        if (playerSocket) {
-          playerSocket.emit('gameOver', { result, reason });
-        }
-      });
+      const whiteSocket = io.sockets.sockets.get(gameSockets.whiteSocketId);
+      if (whiteSocket) {
+        whiteSocket.emit('gameOver', {
+          result,
+          reason,
+          eloChange: eloChanges?.white?.delta || 0,
+        });
+      }
+
+      const blackSocket = io.sockets.sockets.get(gameSockets.blackSocketId);
+      if (blackSocket) {
+        blackSocket.emit('gameOver', {
+          result,
+          reason,
+          eloChange: eloChanges?.black?.delta || 0,
+        });
+      }
 
       // Clean up
       activeGames.delete(gameId.toString());
