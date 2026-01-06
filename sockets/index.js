@@ -50,6 +50,7 @@ export const initializeSockets = (server) => {
     socket.on('timeout', (data) => gameHandlers.handleTimeout(io, socket, data));
     socket.on('sendMessage', (data) => gameHandlers.sendMessage(io, socket, data));
     socket.on('chatAction', (data) => gameHandlers.chatAction(io, socket, data));
+    socket.on('rejoinGame', () => gameHandlers.rejoinGame(io, socket));
 
     socket.on('disconnect', () => {
       console.log(`User disconnected: ${socket.user._id}`);

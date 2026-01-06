@@ -15,6 +15,11 @@ const activeGames = new Map();
 // Track socket to game mapping: socketId -> gameId
 const socketToGame = new Map();
 
+// Track disconnection timeouts: gameId -> { oderId, timeoutId }
+// Disconnect grace period in milliseconds (60 seconds)
+const DISCONNECT_GRACE_PERIOD = 60 * 1000;
+const disconnectTimeouts = new Map();
+
 /**
  * Handle user joining the matchmaking queue
  */
@@ -480,13 +485,255 @@ export const disconnectSocket = (io, socket) => {
   // Remove from queue
   removeFromQueue(userId);
 
-  // Handle active game disconnection
+  // Handle active game disconnection - update socket mapping but keep game active
   const gameId = socketToGame.get(socket.id);
   if (gameId) {
-    // For now, just log. In production, you might want to implement:
-    // - Reconnection grace period
-    // - Auto-resign after timeout
-    console.log(`Player disconnected from active game ${gameId}`);
+    const gameSockets = activeGames.get(gameId);
+    if (gameSockets) {
+      const isWhite = gameSockets.whiteSocketId === socket.id;
+      const disconnectedColor = isWhite ? 'white' : 'black';
+
+      // Notify the opponent that this player disconnected
+      const opponentSocketId = isWhite ? gameSockets.blackSocketId : gameSockets.whiteSocketId;
+      if (opponentSocketId) {
+        const opponentSocket = io.sockets.sockets.get(opponentSocketId);
+        if (opponentSocket) {
+          opponentSocket.emit('opponentDisconnected', {
+            gracePeriod: DISCONNECT_GRACE_PERIOD,
+          });
+        }
+      }
+
+      // Mark the player as disconnected but don't end the game yet
+      if (isWhite) {
+        gameSockets.whiteSocketId = null;
+      } else {
+        gameSockets.blackSocketId = null;
+      }
+
+      // Start disconnect timeout - player has grace period to reconnect
+      const timeoutId = setTimeout(async () => {
+        await handleDisconnectTimeout(io, gameId, disconnectedColor);
+      }, DISCONNECT_GRACE_PERIOD);
+
+      // Store timeout info so we can cancel it if player reconnects
+      const existingTimeouts = disconnectTimeouts.get(gameId) || {};
+      existingTimeouts[disconnectedColor] = timeoutId;
+      disconnectTimeouts.set(gameId, existingTimeouts);
+
+      console.log(
+        `Player (${disconnectedColor}) disconnected from game ${gameId} - ${
+          DISCONNECT_GRACE_PERIOD / 1000
+        }s grace period started`
+      );
+    }
+    socketToGame.delete(socket.id);
+  }
+};
+
+/**
+ * Handle disconnect timeout - forfeit game for disconnected player
+ */
+const handleDisconnectTimeout = async (io, gameId, disconnectedColor) => {
+  try {
+    const game = await Game.findById(gameId);
+    if (!game || game.status !== 'active') {
+      // Game already ended or doesn't exist
+      disconnectTimeouts.delete(gameId);
+      return;
+    }
+
+    const gameSockets = activeGames.get(gameId);
+    if (!gameSockets) {
+      disconnectTimeouts.delete(gameId);
+      return;
+    }
+
+    // Check if the player is still disconnected
+    const isStillDisconnected =
+      disconnectedColor === 'white'
+        ? gameSockets.whiteSocketId === null
+        : gameSockets.blackSocketId === null;
+
+    if (!isStillDisconnected) {
+      // Player reconnected, don't forfeit
+      return;
+    }
+
+    // Player didn't reconnect in time - they lose
+    const result = disconnectedColor === 'white' ? '0-1' : '1-0';
+
+    await Game.findByIdAndUpdate(gameId, {
+      status: 'completed',
+      result,
+    });
+
+    const eloChanges = await updateEloRatings(gameId);
+
+    // Notify the remaining player
+    const winnerSocketId =
+      disconnectedColor === 'white' ? gameSockets.blackSocketId : gameSockets.whiteSocketId;
+
+    if (winnerSocketId) {
+      const winnerSocket = io.sockets.sockets.get(winnerSocketId);
+      if (winnerSocket) {
+        winnerSocket.emit('gameOver', {
+          result,
+          reason: 'Opponent abandoned the game',
+          eloChange: eloChanges?.[disconnectedColor === 'white' ? 'black' : 'white']?.delta || 0,
+        });
+      }
+    }
+
+    // Clean up
+    activeGames.delete(gameId);
+    disconnectTimeouts.delete(gameId);
+
+    console.log(`Game ${gameId} ended - ${disconnectedColor} forfeited due to disconnect timeout`);
+  } catch (err) {
+    console.error('Error handling disconnect timeout:', err);
+  }
+};
+
+/**
+ * Handle player rejoining an active game after disconnect/page refresh
+ */
+export const rejoinGame = async (io, socket) => {
+  try {
+    const userId = socket.user._id.toString();
+    const { Identity } = await import('@models');
+
+    // Find any active game where this user is a player
+    const activeGame = await Game.findOne({
+      status: 'active',
+      $or: [{ whitePlayer: userId }, { blackPlayer: userId }],
+    }).lean();
+
+    if (!activeGame) {
+      return socket.emit('noActiveGame');
+    }
+
+    const gameId = activeGame._id.toString();
+    const isWhite = activeGame.whitePlayer.toString() === userId;
+    const playerColor = isWhite ? 'white' : 'black';
+
+    // Cancel any pending disconnect timeout for this player
+    const existingTimeouts = disconnectTimeouts.get(gameId);
+    if (existingTimeouts && existingTimeouts[playerColor]) {
+      clearTimeout(existingTimeouts[playerColor]);
+      delete existingTimeouts[playerColor];
+      console.log(`Cancelled disconnect timeout for ${playerColor} in game ${gameId}`);
+    }
+
+    // Get opponent info
+    const opponentId = isWhite ? activeGame.blackPlayer : activeGame.whitePlayer;
+    const opponent = await Identity.findById(opponentId).select('name elo image').lean();
+
+    // Update or create the active games tracking
+    let gameSockets = activeGames.get(gameId);
+    if (!gameSockets) {
+      // Game exists in DB but not in memory - restore it
+      gameSockets = {
+        whiteSocketId: null,
+        blackSocketId: null,
+      };
+      activeGames.set(gameId, gameSockets);
+    }
+
+    // Update the socket ID for the reconnecting player
+    if (isWhite) {
+      gameSockets.whiteSocketId = socket.id;
+    } else {
+      gameSockets.blackSocketId = socket.id;
+    }
+
+    // Update socket-to-game mapping
+    socketToGame.set(socket.id, gameId);
+
+    // Calculate elapsed time since last move
+    const now = Date.now();
+    const lastMoveAt = activeGame.lastMoveAt ? new Date(activeGame.lastMoveAt).getTime() : now;
+    const elapsedMs = now - lastMoveAt;
+
+    // Determine whose turn it is
+    const currentTurn = activeGame.fen.split(' ')[1];
+    const isWhiteTurn = currentTurn === 'w';
+
+    // Adjust time based on elapsed time since last move
+    let whiteTimeRemaining = activeGame.whiteTimeRemaining;
+    let blackTimeRemaining = activeGame.blackTimeRemaining;
+
+    if (isWhiteTurn) {
+      whiteTimeRemaining = Math.max(0, whiteTimeRemaining - elapsedMs);
+    } else {
+      blackTimeRemaining = Math.max(0, blackTimeRemaining - elapsedMs);
+    }
+
+    // Update times in database
+    await Game.findByIdAndUpdate(gameId, {
+      whiteTimeRemaining,
+      blackTimeRemaining,
+      lastMoveAt: now,
+    });
+
+    console.log(`Player ${userId} rejoined game ${gameId} as ${playerColor}`);
+
+    // Send game state to the reconnecting player
+    socket.emit('gameRejoined', {
+      gameId,
+      color: playerColor,
+      opponent: {
+        name: opponent?.name || activeGame[isWhite ? 'black' : 'white'],
+        elo: opponent?.elo || 1200,
+        image: opponent?.image,
+      },
+      timeControl: activeGame.timeControl,
+      fen: activeGame.fen,
+      pgn: activeGame.pgn || '',
+      whiteTime: whiteTimeRemaining,
+      blackTime: blackTimeRemaining,
+      lastMove:
+        activeGame.uciMoves?.length > 0
+          ? {
+              from: activeGame.uciMoves[activeGame.uciMoves.length - 1].slice(0, 2),
+              to: activeGame.uciMoves[activeGame.uciMoves.length - 1].slice(2, 4),
+            }
+          : null,
+      chatStatus: activeGame.chatStatus,
+      chatRequestedBy: activeGame.chatRequestedBy,
+      messages: [], // We'll decrypt and send messages separately if chat is active
+    });
+
+    // If chat was active, send decrypted messages
+    if (activeGame.chatStatus === 'active' && activeGame.messages?.length > 0) {
+      const { decrypt } = await import('@functions/encryption');
+      activeGame.messages.forEach((msg) => {
+        try {
+          const content = decrypt(msg.content, msg.iv);
+          socket.emit('messageReceived', {
+            gameId,
+            sender: msg.sender,
+            senderName: msg.senderName,
+            content,
+            timestamp: msg.timestamp,
+          });
+        } catch (e) {
+          console.error('Failed to decrypt message during rejoin', e);
+        }
+      });
+    }
+
+    // Notify the opponent that the player reconnected
+    const opponentSocketId = isWhite ? gameSockets.blackSocketId : gameSockets.whiteSocketId;
+    if (opponentSocketId) {
+      const opponentSocket = io.sockets.sockets.get(opponentSocketId);
+      if (opponentSocket) {
+        opponentSocket.emit('opponentReconnected');
+      }
+    }
+  } catch (err) {
+    console.error('Error in rejoinGame:', err);
+    socket.emit('rejoinError', { message: 'Failed to rejoin game' });
   }
 };
 
