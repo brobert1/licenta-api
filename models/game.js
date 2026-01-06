@@ -59,6 +59,8 @@ const schema = new Schema(
     whiteTimeRemaining: Number,
     blackTimeRemaining: Number,
     lastMoveAt: Date, // Timestamp of last move for time tracking
+    lastDrawOfferAt: Date, // Timestamp for cooldown
+    lastDrawOfferBy: String, // 'white' or 'black'
   },
   { timestamps: true }
 );

@@ -318,6 +318,30 @@ export const gameAction = async (io, socket, { gameId, action }) => {
 
       console.log(`Game ${gameId} ended by resignation: ${result}`);
     } else if (action === 'offerDraw') {
+      // Spam prevention: Check if this player already offered a draw recently (1 minute cooldown)
+      const playerColor = isWhite ? 'white' : 'black';
+      
+      if (
+        game.lastDrawOfferBy === playerColor && 
+        game.lastDrawOfferAt
+      ) {
+        const timeSinceLastOffer = Date.now() - new Date(game.lastDrawOfferAt).getTime();
+        const cooldownMs = 60 * 1000; // 1 minute
+        
+        if (timeSinceLastOffer < cooldownMs) {
+          const remainingSeconds = Math.ceil((cooldownMs - timeSinceLastOffer) / 1000);
+          return socket.emit('actionError', { 
+            message: `Please wait ${remainingSeconds}s before offering a draw again.`
+          });
+        }
+      }
+
+      // Update game with draw offer info
+      await Game.findByIdAndUpdate(gameId, {
+        lastDrawOfferBy: playerColor,
+        lastDrawOfferAt: new Date()
+      });
+
       // Notify opponent
       const opponentSocketId = isWhite ? gameSockets.blackSocketId : gameSockets.whiteSocketId;
       const opponentSocket = io.sockets.sockets.get(opponentSocketId);
@@ -346,6 +370,14 @@ export const gameAction = async (io, socket, { gameId, action }) => {
       socketToGame.delete(gameSockets.blackSocketId);
 
       console.log(`Game ${gameId} ended by draw agreement`);
+    } else if (action === 'declineDraw') {
+      // Notify opponent that draw was declined
+      const opponentSocketId = isWhite ? gameSockets.blackSocketId : gameSockets.whiteSocketId;
+      const opponentSocket = io.sockets.sockets.get(opponentSocketId);
+      if (opponentSocket) {
+        opponentSocket.emit('drawDeclined', { gameId });
+      }
+      console.log(`Draw declined in game ${gameId}`);
     }
   } catch (err) {
     console.error('Error in gameAction:', err);
