@@ -1,5 +1,4 @@
 import { calculateRate, error } from '@functions';
-import { gameStatsFilters } from '@functions/filters';
 import { Game } from '@models';
 
 export default async (req, res) => {
@@ -8,9 +7,27 @@ export default async (req, res) => {
     throw error(404, 'Missing required params');
   }
 
-  const filters = gameStatsFilters(req.query, me, req.user.name);
+  // Build query
+  const query = {
+    $or: [{ user: me }, { whitePlayer: me }, { blackPlayer: me }],
+    status: { $ne: 'active' }, // Exclude active games
+  };
 
-  const games = await Game.find(filters);
+  // Filter by type
+  if (req.query.type === 'bot') {
+    query.type = 'bot';
+  } else if (req.query.type === 'live') {
+    query.type = 'live';
+  }
+
+  // Filter by color
+  if (req.query.color === 'white') {
+    query.$or = [{ user: me, white: req.user.name }, { whitePlayer: me }];
+  } else if (req.query.color === 'black') {
+    query.$or = [{ user: me, black: req.user.name }, { blackPlayer: me }];
+  }
+
+  const games = await Game.find(query);
 
   if (!games) {
     throw error(404, 'Resource not found');
@@ -25,10 +42,35 @@ export default async (req, res) => {
 
   games.forEach((game) => {
     stats.games++;
-    if (game.result === req.user.name) {
-      stats.wins++;
-    } else if (game.result === 'Draw') {
+
+    // Determine user's color in this game
+    let isWhite = false;
+    if (game.type === 'bot') {
+      isWhite = game.white === req.user.name;
+    } else {
+      isWhite = game.whitePlayer?.toString() === me;
+    }
+
+    // Calculate result
+    let userWon = false;
+    let isDraw = false;
+
+    if (game.result === '1-0') {
+      userWon = isWhite;
+    } else if (game.result === '0-1') {
+      userWon = !isWhite;
+    } else if (game.result === '1/2-1/2') {
+      isDraw = true;
+    } else if (game.result === 'Draw') { // Legacy support
+      isDraw = true;
+    } else if (game.result === req.user.name) { // Legacy support for bot games
+      userWon = true;
+    }
+
+    if (isDraw) {
       stats.draws++;
+    } else if (userWon) {
+      stats.wins++;
     } else {
       stats.losses++;
     }

@@ -11,7 +11,7 @@ export default async (req, res) => {
 
   const game = await Game.findOne({
     _id: id,
-    'user._id': me,
+    $or: [{ user: me }, { whitePlayer: me }, { blackPlayer: me }],
   });
 
   if (!game) {
