@@ -43,7 +43,7 @@ const schema = new Schema(
     },
     elo: {
       type: Number,
-      default: 1200,
+      default: 400,
     },
   },
   { timestamps: true }
