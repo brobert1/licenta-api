@@ -27,8 +27,8 @@ export default async (req, res) => {
     chapters: [],
   };
 
-  // Only add course if it's provided and not empty and if the user is an admin
-  if (author?.__t === 'admin' && course) {
+  // Only add course if it's provided and not empty and if the user is a professor
+  if (author?.__t === 'professor' && course) {
     studyData.course = course;
   }
 
@@ -47,8 +47,8 @@ export default async (req, res) => {
   });
   await study.save();
 
-  // Add study to course content if course is provided and user is admin
-  if (author?.__t === 'admin' && course) {
+  // Add study to course content if course is provided and user is professor
+  if (author?.__t === 'professor' && course) {
     const courseDoc = await Course.findById(course);
     if (courseDoc) {
       const nextIndex = courseDoc.content.length;

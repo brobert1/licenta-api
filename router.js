@@ -15,6 +15,8 @@ router.use('/public/*', middleware.speedLimiter);
 // Protect all non-public routes
 router.all('/admin', middleware.authenticate);
 router.all('/admin/*', middleware.authenticate);
+router.all('/professor', middleware.authenticate);
+router.all('/professor/*', middleware.authenticate);
 
 // Useful middleware for testing
 router.use(middleware.testError);
@@ -25,6 +27,7 @@ router.use(routes.identity);
 router.use(routes.logger);
 router.use(routes.client);
 router.use(routes.admin);
+router.use(routes.professor);
 router.use(routes.public);
 router.use(routes.userProgress);
 router.use(routes.stripe);

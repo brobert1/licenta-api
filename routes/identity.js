@@ -18,8 +18,8 @@ router.post('/refresh-token', Identity.refreshToken);
 router.get('/courses', Identity.listCourses);
 
 // Shared routes for client and admin
-router.all('/studies', authenticate, authorize('client', 'admin'));
-router.all('/studies/*', authenticate, authorize('client', 'admin'));
+router.all('/studies', authenticate, authorize('client', 'professor'));
+router.all('/studies/*', authenticate, authorize('client', 'professor'));
 
 router.get('/studies', Identity.listStudies);
 router.post('/studies', Identity.createStudy);
@@ -36,9 +36,9 @@ router.post('/studies/chapter', Identity.createStudyChapter);
 router.delete('/studies/chapter/:id', Identity.deleteStudyChapter);
 router.put('/studies/chapter/:id/pgn', Identity.saveChapterPgn);
 
-// Shared routes for client and admin
-router.all('/tags', authenticate, authorize('client', 'admin'));
-router.all('/tags/*', authenticate, authorize('client', 'admin'));
+// Shared routes for client and professor
+router.all('/tags', authenticate, authorize('client', 'professor'));
+router.all('/tags/*', authenticate, authorize('client', 'professor'));
 
 router.get('/tags', Identity.listTags);
 router.post('/tags', Identity.createTag);

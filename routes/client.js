@@ -6,8 +6,8 @@ const router = Router();
 export default router;
 
 // Protect all client routes
-router.all('/client', middleware.authenticate, middleware.authorize('client', 'admin'));
-router.all('/client/*', middleware.authenticate, middleware.authorize('client', 'admin'));
+router.all('/client', middleware.authenticate, middleware.authorize('client', 'professor'));
+router.all('/client/*', middleware.authenticate, middleware.authorize('client', 'professor'));
 
 // Courses routes
 router.get('/client/courses', Client.listCourses);

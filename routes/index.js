@@ -1,5 +1,6 @@
 export { default as admin } from './admin';
 export { default as client } from './client';
+export { default as professor } from './professor';
 export { default as identity } from './identity';
 export { default as logger } from './logger';
 export { default as public } from './public';

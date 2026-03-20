@@ -38,6 +38,10 @@ const schema = new Schema(
       image: requiredString,
       title: requiredString,
     },
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: 'identity',
+    },
     isPaid: {
       type: Boolean,
       default: false,
