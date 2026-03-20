@@ -1,25 +1,29 @@
 import getFileContent from '@db/functions/get-file-content';
 
+const VIMEO_PREVIEW_URLS = [
+  "https://vimeo.com/371639181?fl=pl&fe=sh"
+];
+
 export default async () => {
   const admin1 = {
     name: 'Alex Banzea',
-    image: '/images/alex-banzea-profile.jpg',
+    image: 'https://randomuser.me/api/portraits/men/32.jpg',
     title: 'IM',
   };
 
   const admin2 = {
     name: 'Grandmaster Coach',
-    image: '/images/alex-banzea-profile.jpg', // Reusing image placeholder
+    image: 'https://randomuser.me/api/portraits/men/54.jpg',
     title: 'GM',
   };
 
   const admin3 = {
     name: 'Strategy Expert',
-    image: '/images/alex-banzea-profile.jpg', // Reusing image placeholder
+    image: 'https://randomuser.me/api/portraits/men/76.jpg',
     title: 'FM',
   };
 
-  return [
+  const courses = [
     // --- Admin 1 (Alex Banzea) Courses ---
     {
       name: 'Sicilian Defense Mastery',
@@ -228,4 +232,12 @@ export default async () => {
       hasMoveTrainer: true,
     },
   ];
+
+  return courses.map((course, index) => ({
+    ...course,
+    preview: {
+      ...course.preview,
+      video: VIMEO_PREVIEW_URLS[index % VIMEO_PREVIEW_URLS.length],
+    },
+  }));
 };

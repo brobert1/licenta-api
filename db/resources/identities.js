@@ -12,6 +12,10 @@ export default async () => {
       __t: 'professor',
       password,
       active: true,
+      image: {
+        name: 'alex-banzea.jpg',
+        path: 'https://randomuser.me/api/portraits/men/32.jpg',
+      },
     },
     {
       email: 'grandmaster@email.com',
@@ -20,6 +24,10 @@ export default async () => {
       __t: 'professor',
       password,
       active: true,
+      image: {
+        name: 'grandmaster-coach.jpg',
+        path: 'https://randomuser.me/api/portraits/men/54.jpg',
+      },
     },
     {
       email: 'strategy@email.com',
@@ -28,6 +36,10 @@ export default async () => {
       __t: 'professor',
       password,
       active: true,
+      image: {
+        name: 'strategy-expert.jpg',
+        path: 'https://randomuser.me/api/portraits/men/76.jpg',
+      },
     },
     // Admin
     {

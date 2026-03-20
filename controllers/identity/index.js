@@ -1,4 +1,6 @@
 export { default as changePassword } from './change-password';
+export { default as lichessLogin } from './lichess-login';
+export { default as lichessCallback } from './lichess-callback';
 export { default as forgot } from './forgot';
 export { default as listCourses } from './list-courses';
 export { default as login } from './login';

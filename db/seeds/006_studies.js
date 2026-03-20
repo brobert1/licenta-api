@@ -14,7 +14,7 @@ export async function seed() {
 
     for (const course of courses) {
       const courseStudies = studies.filter((study) => {
-        return study.course && study.course._id.equals(course._id);
+        return study.course && String(study.course) === String(course._id);
       });
 
       const contentItems = courseStudies.map((study, index) => ({

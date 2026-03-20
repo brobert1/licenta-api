@@ -8,8 +8,8 @@ const seed = async () => {
   // await seeds.reviews.seed();
   // await seeds.drills.seed();
   // await seeds.diagrams.seed();
-  // await seeds.studies.seed();
-  // await seeds.studiesChapters.seed();
+  await seeds.studies.seed();
+  await seeds.studiesChapters.seed();
 };
 
 const seedMongoDb = async () => {

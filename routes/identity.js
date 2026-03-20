@@ -6,6 +6,9 @@ import { authenticate, authorize, recaptcha, validate } from 'express-goodies/mi
 const router = Router();
 export default router;
 
+router.get('/lichess', Identity.lichessLogin);
+router.get('/lichess/callback', Identity.lichessCallback);
+
 router.post('/forgot', recaptcha, Identity.forgot);
 router.post('/login', recaptcha, validate(loginSchema), Identity.login);
 router.post('/signup', recaptcha, validate(signupSchema), Identity.signup);

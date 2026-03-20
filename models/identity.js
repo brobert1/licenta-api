@@ -45,6 +45,11 @@ const schema = new Schema(
       type: Number,
       default: 400,
     },
+    lichessId: {
+      type: String,
+      sparse: true,
+      unique: true,
+    },
   },
   { timestamps: true }
 );

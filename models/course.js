@@ -22,6 +22,7 @@ const schema = new Schema(
     },
     preview: {
       description: sanitizedString,
+      video: sanitizedString,
       image: {
         name: String,
         path: String,

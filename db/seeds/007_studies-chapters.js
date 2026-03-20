@@ -14,9 +14,12 @@ export async function seed() {
 
     for (const study of studies) {
       const studyChapters = chapters.filter((chapter) => {
-        return chapter.study && chapter.study._id.equals(study._id);
+        return chapter.study && String(chapter.study) === String(study._id);
       });
-      await Study.updateOne({ _id: study._id }, { chapters: studyChapters });
+      await Study.updateOne(
+        { _id: study._id },
+        { chapters: studyChapters.map((chapter) => chapter._id) }
+      );
     }
 
     console.log('✓');
