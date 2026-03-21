@@ -1,4 +1,7 @@
 export { default as addHistory } from './add-history';
+export { default as getDailyStats } from './get-daily-stats';
+export { default as getEnrolledProgress } from './get-enrolled-progress';
+export { default as listPopularStudies } from './list-popular-studies';
 export { default as claimFreeCourse } from './claim-free-course';
 export { default as createCheckoutSession } from './create-checkout-session';
 export { default as createGame } from './create-game';

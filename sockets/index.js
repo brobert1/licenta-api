@@ -39,8 +39,12 @@ export const initializeSockets = (server) => {
     }
   });
 
+  const connectedUsers = new Set();
+
   io.on('connection', (socket) => {
     console.log(`User connected: ${socket.user._id}`);
+    connectedUsers.add(socket.id);
+    io.emit('playersOnline', connectedUsers.size);
 
     // Attach handlers
     socket.on('joinQueue', (data) => gameHandlers.joinQueue(io, socket, data));
@@ -54,6 +58,8 @@ export const initializeSockets = (server) => {
 
     socket.on('disconnect', () => {
       console.log(`User disconnected: ${socket.user._id}`);
+      connectedUsers.delete(socket.id);
+      io.emit('playersOnline', connectedUsers.size);
       disconnectSocket(io, socket);
     });
   });

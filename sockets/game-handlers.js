@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { Chess } from 'chess.js';
-import { Game } from '@models';
+import { Game, DailyStats } from '@models';
 import {
   addToQueue,
   removeFromQueue,
@@ -19,6 +19,36 @@ const socketToGame = new Map();
 // Disconnect grace period in milliseconds (60 seconds)
 const DISCONNECT_GRACE_PERIOD = 60 * 1000;
 const disconnectTimeouts = new Map();
+
+/**
+ * Upsert daily stats for both players after a live game ends.
+ */
+const recordLiveGameStats = async (whitePlayerId, blackPlayerId, result, eloChanges) => {
+  const date = new Date().toISOString().slice(0, 10);
+
+  const buildInc = (role) => {
+    const inc = {};
+    if (result === '1-0') inc[role === 'white' ? 'wins' : 'losses'] = 1;
+    else if (result === '0-1') inc[role === 'white' ? 'losses' : 'wins'] = 1;
+    else inc.draws = 1;
+    const delta = eloChanges?.[role]?.delta;
+    if (delta) inc.eloGained = delta;
+    return inc;
+  };
+
+  await Promise.all([
+    DailyStats.findOneAndUpdate(
+      { user: whitePlayerId.toString(), date },
+      { $inc: buildInc('white') },
+      { upsert: true }
+    ),
+    DailyStats.findOneAndUpdate(
+      { user: blackPlayerId.toString(), date },
+      { $inc: buildInc('black') },
+      { upsert: true }
+    ),
+  ]);
+};
 
 /**
  * Handle user joining the matchmaking queue
@@ -231,8 +261,9 @@ export const makeMove = async (io, socket, { gameId, move }) => {
         result: gameResult,
       });
 
-      // Update ELO
-      await updateEloRatings(gameId);
+      // Update ELO and daily stats
+      const eloChanges = await updateEloRatings(gameId);
+      await recordLiveGameStats(game.whitePlayer, game.blackPlayer, gameResult, eloChanges);
     }
 
     // Broadcast move to both players
@@ -307,6 +338,7 @@ export const gameAction = async (io, socket, { gameId, action }) => {
       });
 
       const eloChanges = await updateEloRatings(gameId);
+      await recordLiveGameStats(game.whitePlayer, game.blackPlayer, result, eloChanges);
 
       // Notify both players with their ELO changes
       const whiteSid = gameSockets.whiteSocketId;
@@ -371,6 +403,7 @@ export const gameAction = async (io, socket, { gameId, action }) => {
       });
 
       const eloChanges = await updateEloRatings(gameId);
+      await recordLiveGameStats(game.whitePlayer, game.blackPlayer, '1/2-1/2', eloChanges);
 
       // Notify both players with their ELO changes
       const whiteSocket = io.sockets.sockets.get(gameSockets.whiteSocketId);
@@ -441,6 +474,7 @@ export const handleTimeout = async (io, socket, { gameId }) => {
     });
 
     const eloChanges = await updateEloRatings(gameId);
+    await recordLiveGameStats(game.whitePlayer, game.blackPlayer, result, eloChanges);
 
     // Notify both players with their ELO changes
     const gameSockets = activeGames.get(gameId.toString());
@@ -569,6 +603,7 @@ const handleDisconnectTimeout = async (io, gameId, disconnectedColor) => {
     });
 
     const eloChanges = await updateEloRatings(gameId);
+    await recordLiveGameStats(game.whitePlayer, game.blackPlayer, result, eloChanges);
 
     // Notify the remaining player
     const winnerSocketId =

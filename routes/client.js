@@ -13,6 +13,7 @@ router.all('/client/*', middleware.authenticate, middleware.authorize('client', 
 router.get('/client/courses', Client.listCourses);
 router.get('/client/courses/:id', Client.viewCourse);
 router.post('/client/courses/:id/claim', Client.claimFreeCourse);
+router.get('/client/enrolled-courses/progress', Client.getEnrolledProgress);
 router.get('/client/enrolled-courses', Client.listEnrolledCourses);
 router.put('/client/course/:id/enroll', Client.enrollCourse);
 
@@ -29,6 +30,7 @@ router.delete('/client/account/image', Client.removeImage);
 router.put('/client/account/newsletter', Client.updateNewsletter);
 
 // Studies routes
+router.get('/client/studies/popular', Client.listPopularStudies);
 router.get('/client/studies/:id', Client.viewStudy);
 
 // Checkout routes
@@ -43,5 +45,6 @@ router.put('/client/history', Client.addHistory);
 // Game routes
 router.get('/client/play/history', Client.listGames);
 router.get('/client/play/stats', Client.getGameStats);
+router.get('/client/play/stats/daily', Client.getDailyStats);
 router.post('/client/play', Client.createGame);
 router.get('/client/play/game/:id', Client.viewGame);

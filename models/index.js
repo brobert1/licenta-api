@@ -1,4 +1,5 @@
 export { default as Admin } from './admin';
+export { default as DailyStats } from './daily-stats';
 export { default as Chapter } from './chapter';
 export { default as Professor } from './professor';
 export { default as Client } from './client';
