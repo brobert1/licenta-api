@@ -5,7 +5,7 @@ const seed = async () => {
   // Add all collection seeds below
   await seeds.identities.seed();
   await seeds.courses.seed();
-  // await seeds.reviews.seed();
+  await seeds.reviews.seed();
   // await seeds.drills.seed();
   // await seeds.diagrams.seed();
   await seeds.studies.seed();
