@@ -20,6 +20,53 @@ const socketToGame = new Map();
 const DISCONNECT_GRACE_PERIOD = 60 * 1000;
 const disconnectTimeouts = new Map();
 
+/** Reject client timeout if the thinking player still has more than this much time (ms). */
+const TIME_FLAG_GRACE_MS = 250;
+
+function getThinkingPlayerRemainingMs(game) {
+  const nowMs = Date.now();
+  const lastMoveAtMs = game.lastMoveAt ? new Date(game.lastMoveAt).getTime() : nowMs;
+  const elapsedMs = Math.max(0, nowMs - lastMoveAtMs);
+  const currentTurn = game.fen.split(' ')[1];
+  const stored = currentTurn === 'w' ? game.whiteTimeRemaining : game.blackTimeRemaining;
+  return Math.max(0, stored - elapsedMs);
+}
+
+async function finalizeGameOnTimeLoss(io, gameId, gameDoc) {
+  const gameIdStr = gameId.toString();
+  const currentTurn = gameDoc.fen.split(' ')[1];
+  const result = currentTurn === 'w' ? '0-1' : '1-0';
+  const reason = currentTurn === 'w' ? 'White ran out of time' : 'Black ran out of time';
+
+  await Game.findByIdAndUpdate(gameId, { status: 'completed', result });
+  const eloChanges = await updateEloRatings(gameId);
+  await recordLiveGameStats(gameDoc.whitePlayer, gameDoc.blackPlayer, result, eloChanges);
+
+  const gameSockets = activeGames.get(gameIdStr);
+  if (gameSockets) {
+    const emitGameOver = (socketId, eloKey) => {
+      if (!socketId) return;
+      const playerSocket = io.sockets.sockets.get(socketId);
+      if (playerSocket) {
+        playerSocket.emit('gameOver', {
+          result,
+          reason,
+          eloChange: eloChanges?.[eloKey]?.delta || 0,
+        });
+      }
+    };
+
+    emitGameOver(gameSockets.whiteSocketId, 'white');
+    emitGameOver(gameSockets.blackSocketId, 'black');
+
+    activeGames.delete(gameIdStr);
+    if (gameSockets.whiteSocketId) socketToGame.delete(gameSockets.whiteSocketId);
+    if (gameSockets.blackSocketId) socketToGame.delete(gameSockets.blackSocketId);
+  }
+
+  console.log(`Game ${gameIdStr} ended on time: ${reason}`);
+}
+
 /**
  * Upsert daily stats for both players after a live game ends.
  */
@@ -178,6 +225,14 @@ export const makeMove = async (io, socket, { gameId, move }) => {
     const currentTurn = chess.turn();
     if ((currentTurn === 'w' && !isWhite) || (currentTurn === 'b' && !isBlack)) {
       return socket.emit('moveError', { message: 'Not your turn' });
+    }
+
+    if (game.timeControl?.initial > 0 && game.uciMoves.length > 0) {
+      const remainingMs = getThinkingPlayerRemainingMs(game);
+      if (remainingMs <= 0) {
+        await finalizeGameOnTimeLoss(io, gameId, game);
+        return;
+      }
     }
 
     // Try to make the move
@@ -463,47 +518,12 @@ export const handleTimeout = async (io, socket, { gameId }) => {
       return socket.emit('timeoutError', { message: 'Not a player in this game' });
     }
 
-    // Determine whose turn it is - that player loses on time
-    const currentTurn = game.fen.split(' ')[1];
-    const result = currentTurn === 'w' ? '0-1' : '1-0';
-    const reason = currentTurn === 'w' ? 'White ran out of time' : 'Black ran out of time';
-
-    await Game.findByIdAndUpdate(gameId, {
-      status: 'completed',
-      result,
-    });
-
-    const eloChanges = await updateEloRatings(gameId);
-    await recordLiveGameStats(game.whitePlayer, game.blackPlayer, result, eloChanges);
-
-    // Notify both players with their ELO changes
-    const gameSockets = activeGames.get(gameId.toString());
-    if (gameSockets) {
-      const whiteSocket = io.sockets.sockets.get(gameSockets.whiteSocketId);
-      if (whiteSocket) {
-        whiteSocket.emit('gameOver', {
-          result,
-          reason,
-          eloChange: eloChanges?.white?.delta || 0,
-        });
-      }
-
-      const blackSocket = io.sockets.sockets.get(gameSockets.blackSocketId);
-      if (blackSocket) {
-        blackSocket.emit('gameOver', {
-          result,
-          reason,
-          eloChange: eloChanges?.black?.delta || 0,
-        });
-      }
-
-      // Clean up
-      activeGames.delete(gameId.toString());
-      socketToGame.delete(gameSockets.whiteSocketId);
-      socketToGame.delete(gameSockets.blackSocketId);
+    const remainingMs = getThinkingPlayerRemainingMs(game);
+    if (remainingMs > TIME_FLAG_GRACE_MS) {
+      return socket.emit('timeoutError', { message: 'Clock has not expired' });
     }
 
-    console.log(`Game ${gameId} ended by timeout: ${reason}`);
+    await finalizeGameOnTimeLoss(io, gameId, game);
   } catch (err) {
     console.error('Error in handleTimeout:', err);
     socket.emit('timeoutError', { message: 'An error occurred' });
